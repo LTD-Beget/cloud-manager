@@ -180,15 +180,18 @@ message Service {
     // service status
     Status status = 4;
 
-    // service configuration
-    ServiceConfiguration configuration = 5;
-
     // created datetime, W3C
-    string date_create = 6;
+    string created_at = 6;
+
+    // price per day
+    double price_day = 7;
+
+    // price per month
+    double price_month = 8;
 
     oneof entity {
-        mysql.Mysql5 mysql5 = 7;
-        mysql.Mysql8 mysql8 = 8;
+        mysql.Mysql5 mysql5 = 9;
+        mysql.Mysql8 mysql8 = 10;
     }
 
     enum Status {
@@ -210,7 +213,8 @@ message ServiceConfiguration {
     // price per month
     double price_month = 3;
 
-    oneof resource_configuration {
-        mysql.Configuration mysql_configuration = 4;
+    oneof configuration {
+        mysql.Mysql5Configuration mysql5 = 4;
+        mysql.Mysql5Configuration mysql8 = 5;
     }
 }

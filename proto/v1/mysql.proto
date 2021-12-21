@@ -302,8 +302,8 @@ message UpdateDbResponse {
 /////
 
 message Mysql5 {
-    // current IP addresses info
-    repeated structures.AddressInfo address = 1;
+    // configuration
+    Mysql5Configuration configuration = 1;
 
     // mysql host
     string host = 2;
@@ -311,19 +311,22 @@ message Mysql5 {
     // mysql port
     uint32 port = 3;
 
+    // current IP addresses info
+    repeated structures.AddressInfo address = 4;
+
     // url for phpmyadmin
-    string pma_url = 4;
+    string pma_url = 5;
 
     // used disk size, bytes
-    uint64 disk_used = 5;
+    uint64 disk_used = 6;
 
     // left disk size, bytes
-    uint64 disk_left = 6;
+    uint64 disk_left = 7;
 }
 
 message Mysql8 {
-    // current IP addresses info
-    repeated structures.AddressInfo address = 1;
+    // configuration
+    Mysql8Configuration configuration = 1;
 
     // mysql host
     string host = 2;
@@ -331,14 +334,17 @@ message Mysql8 {
     // mysql port
     uint32 port = 3;
 
+    // current IP addresses info
+    repeated structures.AddressInfo address = 4;
+
     // url for phpmyadmin
-    string pma_url = 4;
+    string pma_url = 5;
 
     // used disk size, bytes
-    uint64 disk_used = 5;
+    uint64 disk_used = 6;
 
     // left disk size, bytes
-    uint64 disk_left = 6;
+    uint64 disk_left = 7;
 }
 
 message CreateParams {
@@ -371,7 +377,7 @@ message CreateError {
     }
 }
 
-message Configuration {
+message Mysql5Configuration {
     // dedicated CPU cores
     uint32 cpu_count = 1;
 
@@ -380,9 +386,17 @@ message Configuration {
 
     // memory limit, MB
     uint32 memory = 3;
+}
 
-    // software  info
-    structures.Software software = 4;
+message Mysql8Configuration {
+    // dedicated CPU cores
+    uint32 cpu_count = 1;
+
+    // disk size limit, MB
+    uint32 disk_size = 2;
+
+    // memory limit, MB
+    uint32 memory = 3;
 }
 
 message Db {
