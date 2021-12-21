@@ -58,7 +58,7 @@ service MysqlService {
     }
 
     // change access password
-    rpc changePassword (ChangePasswordRequest) returns (ChangePasswordResponse) {
+    rpc changeAccessPassword (ChangeAccessPasswordRequest) returns (ChangeAccessPasswordResponse) {
         option (google.api.http) = {
             patch: "/v1/cloud/mysql/{database_id}/{db_name}/access/{host}",
         };
@@ -235,7 +235,7 @@ message RemoveAccessResponse {
     }
 }
 
-message ChangePasswordRequest {
+message ChangeAccessPasswordRequest {
     // database/service identifier 
     string database_id = 1;
 
@@ -252,7 +252,7 @@ message ChangePasswordRequest {
     bool save_pma_password = 5;
 }
 
-message ChangePasswordResponse {
+message ChangeAccessPasswordResponse {
     oneof result {
         Db db = 1;
         Error error = 2;
@@ -313,6 +313,12 @@ message Mysql5 {
 
     // url for phpmyadmin
     string pma_url = 4;
+
+    // used disk size, bytes
+    uint64 disk_used = 5;
+
+    // left disk size, bytes
+    uint64 disk_left = 6;
 }
 
 message Mysql8 {
@@ -327,6 +333,12 @@ message Mysql8 {
 
     // url for phpmyadmin
     string pma_url = 4;
+
+    // used disk size, bytes
+    uint64 disk_used = 5;
+
+    // left disk size, bytes
+    uint64 disk_left = 6;
 }
 
 message CreateParams {

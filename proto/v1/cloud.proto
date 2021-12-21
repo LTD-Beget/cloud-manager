@@ -183,9 +183,12 @@ message Service {
     // service configuration
     ServiceConfiguration configuration = 5;
 
+    // created datetime, W3C
+    string date_create = 6;
+
     oneof entity {
-        mysql.Mysql5 mysql5 = 6;
-        mysql.Mysql8 mysql8 = 7;
+        mysql.Mysql5 mysql5 = 7;
+        mysql.Mysql8 mysql8 = 8;
     }
 
     enum Status {
@@ -194,7 +197,6 @@ message Service {
         RESTARTING = 2;
         STOPPED = 3;
         RECONFIGURING = 4;
-        REMOVED = 5;
     }
 }
 
