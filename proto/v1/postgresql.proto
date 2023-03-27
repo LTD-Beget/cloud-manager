@@ -5,114 +5,114 @@ import "google/api/annotations.proto";
 import "cloud/proto/v1/structures.proto";
 
 service PostgresqlService {
-    rpc getConfig(GetPgConfigRequest) returns (GetPgConfigResponse) {
+    rpc pgGetConfig(PgGetConfigRequest) returns (PgGetConfigResponse) {
         option (google.api.http) = {
             get: "/v1/cloud/postgresql/{service_id}/config",
         };
     }
 
-    rpc setConfig(SetPgConfigRequest) returns (SetPgConfigResponse) {
+    rpc pgSetConfig(PgSetConfigRequest) returns (PgSetConfigResponse) {
         option (google.api.http) = {
             put: "/v1/cloud/postgresql/{service_id}/config",
             body: "*"
         };
     }
 
-    rpc getDbList(GetPgDbListRequest) returns (GetPgDbListResponse) {
+    rpc pgGetDbList(PgGetDbListRequest) returns (PgGetDbListResponse) {
         option (google.api.http) = {
             get: "/v1/cloud/postgresql/{service_id}/db",
         };
     }
 
-    rpc createDb(PgCreateDbRequest) returns (PgCreateDbResponse) {
+    rpc pgCreateDb(PgCreateDbRequest) returns (PgCreateDbResponse) {
         option (google.api.http) = {
             post: "/v1/cloud/postgresql/{service_id}/db",
             body: "*"
         };
     }
 
-    rpc updateDb(PgUpdateDbRequest) returns (PgUpdateDbResponse){
+    rpc pgUpdateDb(PgUpdateDbRequest) returns (PgUpdateDbResponse){
         option (google.api.http) = {
             patch: "/v1/cloud/postgresql/{service_id}/db/{db_name}",
             body: "*"
         };
     }
 
-    rpc removeDb(PgRemoveDbRequest) returns (PgRemoveDbResponse) {
+    rpc pgRemoveDb(PgRemoveDbRequest) returns (PgRemoveDbResponse) {
         option (google.api.http) = {
             delete: "/v1/cloud/postgresql/{service_id}/db/{db_name}",
         };
     }
 
-    rpc getUserList(GetUserListRequest) returns (GetUserListResponse) {
+    rpc pgGetRoleList(PgGetRoleListRequest) returns (PgGetRoleListResponse) {
         option (google.api.http) = {
-            get: "/v1/cloud/postgresql/{service_id}/user"
+            get: "/v1/cloud/postgresql/{service_id}/role"
         };
     }
 
-    rpc createUser(CreateUserRequest) returns (CreateUserResponse) {
+    rpc pgCreateRole(PgCreateRoleRequest) returns (PgCreateRoleResponse) {
         option (google.api.http) = {
-            post: "/v1/cloud/postgresql/{service_id}/user",
+            post: "/v1/cloud/postgresql/{service_id}/role",
             body: "*"
         };
     }
 
-    rpc updateUser(UpdateUserRequest) returns (UpdateUserResponse) {
+    rpc pgUpdateRole(PgUpdateRoleRequest) returns (PgUpdateRoleResponse) {
         option (google.api.http) = {
-            patch: "/v1/cloud/postgresql/{service_id}/user/{user_name}",
+            patch: "/v1/cloud/postgresql/{service_id}/role/{role_name}",
             body: "*"
         };
     }
 
-    rpc removeUser(RemoveUserRequest) returns (RemoveUserResponse) {
+    rpc pgRemoveRole(PgRemoveRoleRequest) returns (PgRemoveRoleResponse) {
         option (google.api.http) = {
-            delete: "/v1/cloud/postgresql/{service_id}/user/{user_name}",
+            delete: "/v1/cloud/postgresql/{service_id}/role/{role_name}",
         };
     }
 
-    rpc grantAccessForUser(GrantAccessForUserRequest) returns (GrantAccessForUserResponse) {
+    rpc pgGrantAccessForRole(PgGrantAccessForRoleRequest) returns (PgGrantAccessForRoleResponse) {
         option (google.api.http) = {
-            post: "/v1/cloud/postgresql/{service_id}/user/{user_name}/db/{db_name}/access",
+            post: "/v1/cloud/postgresql/{service_id}/role/{role_name}/db/{db_name}/access",
             body: "*"
         };
     }
 
-    rpc revokeAccessFromUser(RevokeAccessFromUserRequest) returns (RevokeAccessFromUserResponse) {
+    rpc pgRevokeAccessFromRole(PgRevokeAccessFromRoleRequest) returns (PgRevokeAccessFromRoleResponse) {
         option (google.api.http) = {
-            delete: "/v1/cloud/postgresql/{service_id}/user/{user_name}/db/{db_name}/access",
+            delete: "/v1/cloud/postgresql/{service_id}/role/{role_name}/db/{db_name}/access",
         };
     }
 
-    rpc getRemoteAccessList(GetRemoteAccessListRequest) returns (GetRemoteAccessListResponse) {
+    rpc pgGetRemoteAccessList(PgGetRemoteAccessListRequest) returns (PgGetRemoteAccessListResponse) {
         option (google.api.http) = {
             get: "/v1/cloud/postgresql/{service_id}/remote-access"
         };
     }
 
-    rpc addRemoteAccess(AddRemoteAccessRequest) returns (AddRemoteAccessResponse) {
+    rpc pgAddRemoteAccess(PgAddRemoteAccessRequest) returns (PgAddRemoteAccessResponse) {
         option (google.api.http) = {
             post: "/v1/cloud/postgresql/{service_id}/remote-access/{subnet_address}"
         };
     }
 
-    rpc removeRemoteAccess(RemoveRemoteAccessRequest) returns (RemoveRemoteAccessResponse) {
+    rpc pgRemoveRemoteAccess(PgRemoveRemoteAccessRequest) returns (PgRemoveRemoteAccessResponse) {
         option (google.api.http) = {
             delete: "/v1/cloud/postgresql/{service_id}/remote-access/{subnet_address}"
         };
     }
 }
 
-message GetPgConfigRequest {
+message PgGetConfigRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 }
 
-message GetPgConfigResponse {
+message PgGetConfigResponse {
     // Параметры базы данных
     PgConfig config = 1;
 }
 
-message SetPgConfigRequest {
+message PgSetConfigRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
@@ -123,7 +123,7 @@ message SetPgConfigRequest {
     string preset_name = 3;
 }
 
-message SetPgConfigResponse {
+message PgSetConfigResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: информация о текущей конфигурации базы данных
@@ -156,12 +156,12 @@ message SetPgConfigResponse {
     }
 }
 
-message GetPgDbListRequest {
+message PgGetDbListRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 }
 
-message GetPgDbListResponse {
+message PgGetDbListResponse {
     // Информация о базах данных
     repeated PgDb db = 1;
 }
@@ -266,21 +266,21 @@ message PgRemoveDbResponse {
     }
 }
 
-message GetUserListRequest {
+message PgGetRoleListRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 }
 
-message GetUserListResponse {
-    repeated User user = 1;
+message PgGetRoleListResponse {
+    repeated Role role = 1;
 }
 
-message CreateUserRequest {
+message PgCreateRoleRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
     // Имя пользователя
-    string user_name = 2;
+    string role_name = 2;
 
     // Пароль
     string password = 3;
@@ -295,11 +295,11 @@ message CreateUserRequest {
     repeated string db_access = 6;
 }
 
-message CreateUserResponse {
+message PgCreateRoleResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: информация о пользователе
-        User user = 1;
+        Role role = 1;
 
         // Результат запроса: ошибка при создании пользователя
         Error error = 2;
@@ -323,13 +323,13 @@ message CreateUserResponse {
             SERVICE_DISABLED = 2;
 
             // Некорректное имя пользователя
-            INVALID_USER_NAME = 3;
+            INVALID_ROLE_NAME = 3;
 
             // Некорректный пароль
             INVALID_ACCESS_PASSWORD = 4;
 
             // Создаваемый пользователь уже существует
-            USER_ALREADY_EXISTS = 5;
+            ROLE_ALREADY_EXISTS = 5;
 
             // Словарный пароль (находится в черном списке)
             BLACKLISTED_ACCESS_PASSWORD = 6;
@@ -343,15 +343,15 @@ message CreateUserResponse {
     }
 }
 
-message RemoveUserRequest {
+message PgRemoveRoleRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
     // Имя пользователя
-    string user_name = 2;
+    string role_name = 2;
 }
 
-message RemoveUserResponse {
+message PgRemoveRoleResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: успешное удаление пользователя
@@ -382,20 +382,20 @@ message RemoveUserResponse {
             SERVICE_DISABLED = 2;
 
             // Пользователь явялется владельцем БД и не может быть удален
-            USER_IS_DB_OWNER = 3;
+            ROLE_IS_DB_OWNER = 3;
 
             // Пользователь является пердопределенным и не может быть удален
-            USER_IS_PREDEFINED = 4;
+            ROLE_IS_PREDEFINED = 4;
         }
     }
 }
 
-message UpdateUserRequest {
+message PgUpdateRoleRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
     // Имя пользователя
-    string user_name = 2;
+    string role_name = 2;
 
     // Пароль
     string password = 3;
@@ -407,11 +407,11 @@ message UpdateUserRequest {
     repeated string role = 5;
 }
 
-message UpdateUserResponse {
+message PgUpdateRoleResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: информация о пользователе
-        User user = 1;
+        Role role = 1;
 
         // Результат запроса: ошибка изменения пользователя
         Error error = 2;
@@ -444,7 +444,7 @@ message UpdateUserResponse {
             INVALID_ROLE_LIST = 5;
 
             // Пользователь является пердопределенным и не может быть изменен
-            USER_IS_PREDEFINED = 6;
+            ROLE_IS_PREDEFINED = 6;
         }
     }
 }
@@ -487,22 +487,22 @@ message PgUpdateDbResponse {
     }
 }
 
-message GrantAccessForUserRequest {
+message PgGrantAccessForRoleRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
     // Имя пользователя
-    string user_name = 2;
+    string role_name = 2;
 
     // Имя БД
     string db_name = 3;
 }
 
-message GrantAccessForUserResponse {
+message PgGrantAccessForRoleResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: TODO
-        User user = 1;
+        Role role = 1;
 
         // Результат запроса: ошибка TODO
         Error error = 2;
@@ -528,22 +528,22 @@ message GrantAccessForUserResponse {
     }
 }
 
-message RevokeAccessFromUserRequest {
+message PgRevokeAccessFromRoleRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
     // Имя пользователя
-    string user_name = 2;
+    string role_name = 2;
 
     // Имя БД
     string db_name = 3;
 }
 
-message RevokeAccessFromUserResponse {
+message PgRevokeAccessFromRoleResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: TODO
-        User user = 1;
+        Role role = 1;
 
         // Результат запроса: ошибка TODO
         Error error = 2;
@@ -567,21 +567,21 @@ message RevokeAccessFromUserResponse {
             SERVICE_DISABLED = 2;
 
             // Пользователь явялется владельцем БД, доступ не может быть удален
-            USER_IS_DB_OWNER = 3;
+            ROLE_IS_DB_OWNER = 3;
         }
     }
 }
 
-message GetRemoteAccessListRequest {
+message PgGetRemoteAccessListRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 }
 
-message GetRemoteAccessListResponse {
+message PgGetRemoteAccessListResponse {
     repeated string subnet_address = 1;
 }
 
-message AddRemoteAccessRequest {
+message PgAddRemoteAccessRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
@@ -589,7 +589,7 @@ message AddRemoteAccessRequest {
     string subnet_address = 2;
 }
 
-message AddRemoteAccessResponse {
+message PgAddRemoteAccessResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: TODO
@@ -624,7 +624,7 @@ message AddRemoteAccessResponse {
 }
 
 
-message RemoveRemoteAccessRequest {
+message PgRemoveRemoteAccessRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
@@ -632,7 +632,7 @@ message RemoveRemoteAccessRequest {
     string subnet_address = 2;
 }
 
-message RemoveRemoteAccessResponse {
+message PgRemoveRemoteAccessResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: TODO
@@ -832,7 +832,7 @@ message PgDb {
     string description = 5;
 }
 
-message User {
+message Role {
     // Имя пользователя
     string name = 1;
 
@@ -844,8 +844,11 @@ message User {
     // Список имен БД, доступных пользователю
     repeated string db_access = 4;
 
+    // Список ролей наследуемых пользователем
+    repeated string role = 5;
+
     // Является ли пользователь предопределенным
-    bool predefined = 5;
+    bool predefined = 6;
 }
 
 message PgConfig {
