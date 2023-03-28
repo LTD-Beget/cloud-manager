@@ -69,10 +69,10 @@ message ConfigParam {
     }
 
     message EnumVaule {
-        repeated string value = 1;
+        repeated string value = 3;
     }
 
     message SetVaule {
-        repeated string value = 1;
+        repeated string value = 4;
     }
 }
