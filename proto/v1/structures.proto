@@ -46,3 +46,33 @@ enum StatisticPeriod {
     // Месяц
     MONTH = 4;
 }
+
+message ConfigParam {
+    string name = 1;
+    string documentation_link = 2;
+
+    oneof value {
+        IntegerVaule integer_value = 10;
+        FloatVaule float_value = 11;
+        StringVaule string_value = 12;
+        EnumVaule enum_value = 13;
+        SetVaule set_value = 14;
+    }
+
+    message IntegerVaule {
+    }
+
+    message FloatVaule {
+    }
+
+    message StringVaule {
+    }
+
+    message EnumVaule {
+        repeated string value = 1;
+    }
+
+    message SetVaule {
+        repeated string value = 1;
+    }
+}

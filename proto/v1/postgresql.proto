@@ -799,6 +799,12 @@ message Postgresql15Configuration {
 
     // Отображаемая версия PostgreSQL
     string display_version = 5;
+
+    // Список доступных параметров для конфигурации базы данных
+    repeated structures.ConfigParam config_param = 6;
+
+    // Список доступных пресетов параметров. Пресет по-умолчанию имеет имя "default"
+    repeated PgConfig config_preset = 7;
 }
 
 message Postgresql14Configuration {
@@ -816,6 +822,12 @@ message Postgresql14Configuration {
 
     // Отображаемая версия PostgreSQL
     string display_version = 5;
+
+    // Список доступных параметров для конфигурации базы данных
+    repeated structures.ConfigParam config_param = 6;
+
+    // Список доступных пресетов параметров. Пресет по-умолчанию имеет имя "default"
+    repeated PgConfig config_preset = 7;
 }
 
 message PgDb {
