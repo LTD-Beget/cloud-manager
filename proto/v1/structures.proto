@@ -52,27 +52,27 @@ message ConfigParam {
     string documentation_link = 2;
 
     oneof value {
-        IntegerVaule integer_value = 3;
-        FloatVaule float_value = 4;
-        StringVaule string_value = 5;
-        EnumVaule enum_value = 6;
-        SetVaule set_value = 7;
+        IntegerValue integer_value = 3;
+        FloatValue float_value = 4;
+        StringValue string_value = 5;
+        EnumValue enum_value = 6;
+        SetValue set_value = 7;
     }
 
-    message IntegerVaule {
+    message IntegerValue {
     }
 
-    message FloatVaule {
+    message FloatValue {
     }
 
-    message StringVaule {
+    message StringValue {
     }
 
-    message EnumVaule {
-        repeated string value = 2;
+    message EnumValue {
+        repeated string value = 1;
     }
 
-    message SetVaule {
-        repeated string value = 3;
+    message SetValue {
+        repeated string value = 1;
     }
 }
