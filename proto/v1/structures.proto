@@ -55,10 +55,10 @@ message ConfigParam {
         IntegerValue integer_value = 3;
         FloatValue float_value = 4;
         StringValue string_value = 5;
-        EnumValue enum_value = 6;
-        SetValue set_value = 7;
+//        EnumValue enum_value = 6;
+//        SetValue set_value = 7;
     }
-
+//
     message IntegerValue {
     }
 
@@ -67,12 +67,12 @@ message ConfigParam {
 
     message StringValue {
     }
-
-    message EnumValue {
-        repeated string value = 1;
-    }
-
-    message SetValue {
-        repeated string value = 1;
-    }
+//
+//    message EnumValue {
+//        repeated string value = 1;
+//    }
+//
+//    message SetValue {
+//        repeated string value = 1;
+//    }
 }
