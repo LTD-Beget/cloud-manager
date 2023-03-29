@@ -633,10 +633,10 @@ message Mysql5Configuration {
     string display_version = 5;
 
     // Список доступных параметров для конфигурации базы данных
-    repeated structures.ConfigParam config_param = 7;
+    repeated structures.ConfigParam config_param = 6;
 
     // Список доступных пресетов параметров. Пресет по-умолчанию имеет имя "default"
-    repeated Config config_preset = 8;
+    repeated Config config_preset = 7;
 }
 
 message Mysql8Configuration {
@@ -656,10 +656,10 @@ message Mysql8Configuration {
     string display_version = 5;
 
     // Список доступных параметров для конфигурации базы данных
-    repeated structures.ConfigParam config_param = 7;
+    repeated structures.ConfigParam config_param = 6;
 
     // Список доступных пресетов параметров. Пресет по-умолчанию имеет имя "default"
-    repeated Config config_preset = 8;
+    repeated Config config_preset = 7;
 }
 
 message Db {
