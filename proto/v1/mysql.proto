@@ -656,8 +656,12 @@ message Mysql8Configuration {
     string display_version = 5;
 
     // Список доступных параметров для конфигурации базы данных
-    structures.ConfigParam config_param = 6;
+    ConfigParam config_param = 6;
 
+    message ConfigParam {
+        string name = 1;
+        string documentation_link = 2;
+    }
     // Список доступных пресетов параметров. Пресет по-умолчанию имеет имя "default"
     repeated Config config_preset = 7;
 }
