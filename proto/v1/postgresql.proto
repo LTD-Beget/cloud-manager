@@ -221,6 +221,9 @@ message PgCreateDbResponse {
 
             // Словарный пароль (находится в черном списке)
             BLACKLISTED_ACCESS_PASSWORD = 7;
+
+            // Имя базы данных зарезервировано системой
+            DB_NAME_IS_RESERVED = 8;
         }
     }
 }
@@ -262,6 +265,9 @@ message PgRemoveDbResponse {
 
             // Доступ к сервису заблокирован
             SERVICE_DISABLED = 2;
+
+            // Имя базы данных зарезервировано системой
+            DB_NAME_IS_RESERVED = 3;
         }
     }
 }
@@ -339,6 +345,9 @@ message PgCreateRoleResponse {
 
             // Список имен БД содержит некорректную (несуществующую) базу данных
             INVALID_DB_LIST = 8;
+
+            // Имя пользователя зарезервировано системой
+            ROLE_NAME_IS_RESERVED = 9;
         }
     }
 }
@@ -384,7 +393,7 @@ message PgRemoveRoleResponse {
             // Пользователь явялется владельцем БД и не может быть удален
             ROLE_IS_DB_OWNER = 3;
 
-            // Пользователь является пердопределенным и не может быть удален
+            // Пользователь является предопределенным и не может быть удален
             ROLE_IS_PREDEFINED = 4;
         }
     }
@@ -728,17 +737,20 @@ message PgCreateParams {
     // Имя базы данных
     string db_name = 1;
 
+    // Имя пользователя
+    string role_name = 2;
+
     // Пароль для доступа к базе данных
-    string access_password = 2;
+    string access_password = 3;
 
     // Список параметров для конфигурации базы данных (необязательное поле)
-    map<string, string> param = 3;
+    map<string, string> param = 4;
 
     // Тип конфигурации базы данных (default/custom) (необязательное поле)
-    string preset_name = 4;
+    string preset_name = 5;
 
     // Сохранить пароль для доступа из Adminer
-    bool save_adminer_password = 5;
+    bool save_adminer_password = 6;
 }
 
 message PgCreateError {
@@ -781,6 +793,12 @@ message PgCreateError {
 
         // Некорректные параметры конфигурации
         INVALID_CONFIG_PARAMS = 10;
+
+        // Имя базы данных зарезервировано системой
+        DB_NAME_IS_RESERVED = 11;
+
+        // Имя пользователя зарезервировано системой
+        ROLE_NAME_IS_RESERVED = 12;
     }
 }
 
