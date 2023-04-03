@@ -779,26 +779,29 @@ message PgCreateError {
         // Некорректное имя базы данных
         INVALID_DB_NAME = 5;
 
+        // Некорректное имя пользователя
+        INVALID_ROLE_NAME = 6;
+
         // Некорректный пароль
-        INVALID_ACCESS_PASSWORD = 6;
+        INVALID_ACCESS_PASSWORD = 7;
 
         // Создание временно недоступно
-        TEMPORARILY_UNAVAILABLE = 7;
+        TEMPORARILY_UNAVAILABLE = 8;
 
         // Создание недоступно
-        SERVICE_DISABLED = 8;
+        SERVICE_DISABLED = 9;
 
         // Словарный пароль (пароль находится в черном списке)
-        BLACKLISTED_ACCESS_PASSWORD = 9;
+        BLACKLISTED_ACCESS_PASSWORD = 10;
 
         // Некорректные параметры конфигурации
-        INVALID_CONFIG_PARAMS = 10;
+        INVALID_CONFIG_PARAMS = 11;
 
         // Имя базы данных зарезервировано системой
-        DB_NAME_IS_RESERVED = 11;
+        DB_NAME_IS_RESERVED = 12;
 
         // Имя пользователя зарезервировано системой
-        ROLE_NAME_IS_RESERVED = 12;
+        ROLE_NAME_IS_RESERVED = 13;
     }
 }
 
