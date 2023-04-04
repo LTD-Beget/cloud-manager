@@ -295,7 +295,7 @@ message PgCreateRoleRequest {
     bool save_adminer_password = 4;
 
     // Список ролей наследуемых пользователем
-    repeated string role = 5;
+    repeated string parent_role = 5;
 
     // Список имен БД, доступных пользователю
     repeated string db_access = 6;
@@ -413,7 +413,7 @@ message PgUpdateRoleRequest {
     bool save_adminer_password = 4;
 
     // Список ролей наследуемых пользователем
-    repeated string role = 5;
+    repeated string parent_role = 5;
 }
 
 message PgUpdateRoleResponse {
@@ -878,7 +878,7 @@ message Role {
     repeated string db_access = 4;
 
     // Список ролей наследуемых пользователем
-    repeated string role = 5;
+    repeated string parent_role = 5;
 
     // Является ли пользователь предопределенным
     bool predefined = 6;
