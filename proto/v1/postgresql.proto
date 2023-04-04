@@ -601,14 +601,15 @@ message PgAddRemoteAccessRequest {
 message PgAddRemoteAccessResponse {
     // Результат запроса
     oneof result {
-        // Результат запроса: TODO
+        // Результат запроса: список адресов подсетей
         RemoteAccessList access_list = 1;
 
-        // Результат запроса: ошибка TODO
+        // Результат запроса: ошибка добавления адреса подсети для внешнего доступа
         Error error = 2;
     }
 
     message RemoteAccessList {
+        // Список адресов подсетей
         repeated string subnet_address = 1;
     }
 
@@ -628,6 +629,9 @@ message PgAddRemoteAccessResponse {
 
             // Доступ к сервису заблокирован
             SERVICE_DISABLED = 2;
+
+            // Некорректный формат адреса подсети
+            INVALID_SUBNET_ADDRESS= 3;
         }
     }
 }
@@ -644,14 +648,15 @@ message PgRemoveRemoteAccessRequest {
 message PgRemoveRemoteAccessResponse {
     // Результат запроса
     oneof result {
-        // Результат запроса: TODO
+        // Результат запроса: список адресов подсетей
         RemoteAccessList access_list = 1;
 
-        // Результат запроса: ошибка TODO
+        // Результат запроса: ошибка удаления адреса подсети для внешнего доступа
         Error error = 2;
     }
 
     message RemoteAccessList {
+        // Список адресов подсетей
         repeated string subnet_address = 1;
     }
 
@@ -671,6 +676,9 @@ message PgRemoveRemoteAccessResponse {
 
             // Доступ к сервису заблокирован
             SERVICE_DISABLED = 2;
+
+            // Некорректный формат адреса подсети
+            INVALID_SUBNET_ADDRESS= 3;
         }
     }
 }
