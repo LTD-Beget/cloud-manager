@@ -173,11 +173,28 @@ message PgCreateDbRequest {
     // Название базы данных
     string db_name = 2;
 
-    // Имя пользователя владельца базы данных
-    string owner = 3;
+    // Владелец создаваемой базы данных
+    oneof owner {
+        // Владелец создаваемой базы данных: имя существующей роли
+        string owner_name = 3;
+
+        // Владелец создаваемой базы данных: данные для создания новой роли
+        Role owner_role = 4;
+    }
 
     // Описание базы данных (необязательное поле)
-    string description = 4;
+    string description = 5;
+
+    message Role {
+        // Имя роли
+        string name = 1;
+
+        // Пароль
+        string password = 2;
+
+        // Сохранить пароль для доступа из Adminer
+        bool save_adminer_password = 3;
+    }
 }
 
 message PgCreateDbResponse {
@@ -214,16 +231,25 @@ message PgCreateDbResponse {
             DB_ALREADY_EXISTS = 4;
 
             // Некорректный пароль
-            INVALID_ACCESS_PASSWORD = 5;
+            ROLE_INVALID_ACCESS_PASSWORD = 5;
 
             // Некорректное описание базы данных
             INVALID_DESCRIPTION = 6;
 
             // Словарный пароль (находится в черном списке)
-            BLACKLISTED_ACCESS_PASSWORD = 7;
+            ROLE_BLACKLISTED_ACCESS_PASSWORD = 7;
 
             // Имя базы данных зарезервировано системой
             DB_NAME_IS_RESERVED = 8;
+
+            // Некорректное имя роли
+            INVALID_ROLE_NAME = 9;
+
+            // Создаваемая роль уже существует
+            ROLE_ALREADY_EXISTS = 10;
+
+            // Имя роли зарезервировано системой
+            ROLE_NAME_IS_RESERVED = 11;
         }
     }
 }
@@ -291,7 +317,7 @@ message PgCreateRoleRequest {
     // Пароль
     string password = 3;
 
-    // Сохранить пароль для доступа из PhpMyAdmin
+    // Сохранить пароль для доступа из Adminer
     bool save_adminer_password = 4;
 
     // Список ролей наследуемых пользователем
@@ -409,7 +435,7 @@ message PgUpdateRoleRequest {
     // Пароль
     string password = 3;
 
-    // Сохранить пароль для доступа из PhpMyAdmin
+    // Сохранить пароль для доступа из Adminer
     bool save_adminer_password = 4;
 
     // Список ролей наследуемых пользователем
