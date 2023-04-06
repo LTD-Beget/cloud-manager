@@ -83,9 +83,15 @@ service PostgresqlService {
         };
     }
 
-    rpc getRemoteAccessList(PgGetRemoteAccessListRequest) returns (PgGetRemoteAccessListResponse) {
+    rpc getRemoteAccessState(PgGetRemoteAccessStateRequest) returns (PgGetRemoteAccessStateResponse) {
         option (google.api.http) = {
             get: "/v1/cloud/postgresql/{service_id}/remote-access"
+        };
+    }
+
+    rpc setRemoteAccessStatus(PgSetRemoteAccessStatusRequest) returns (PgSetRemoteAccessStatusResponse) {
+        option (google.api.http) = {
+            put: "/v1/cloud/postgresql/{service_id}/remote-access/status"
         };
     }
 
@@ -607,13 +613,47 @@ message PgRevokeAccessFromRoleResponse {
     }
 }
 
-message PgGetRemoteAccessListRequest {
+message PgGetRemoteAccessStateRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 }
 
-message PgGetRemoteAccessListResponse {
-    repeated string subnet_address = 1;
+message PgGetRemoteAccessStateResponse {
+    PgRemoteAccessState state = 1;
+}
+
+message PgSetRemoteAccessStatusRequest {
+    bool access_allowed = 1;
+}
+
+message PgSetRemoteAccessStatusResponse {
+    // Результат запроса
+    oneof result {
+        // Результат запроса: текущее состояние доступа со внешних адресов
+        PgRemoteAccessState state = 1;
+
+        // Результат запроса: ошибка добавления адреса подсети для внешнего доступа
+        Error error = 2;
+    }
+
+    message Error {
+        // Описание ошибки
+        string message = 1;
+
+        // Код ошибки
+        Code code = 2;
+
+        enum Code {
+            // Зарезервированный код ошибки
+            _ = 0;
+
+            // Некорректный статус ресурса (отличный от running/stopped)
+            INVALID_STATE = 1;
+
+            // Доступ к сервису заблокирован
+            SERVICE_DISABLED = 2;
+        }
+    }
 }
 
 message PgAddRemoteAccessRequest {
@@ -627,16 +667,11 @@ message PgAddRemoteAccessRequest {
 message PgAddRemoteAccessResponse {
     // Результат запроса
     oneof result {
-        // Результат запроса: список адресов подсетей
-        RemoteAccessList access_list = 1;
+        // Результат запроса: текущее состояние доступа со внешних адресов
+        PgRemoteAccessState state = 1;
 
         // Результат запроса: ошибка добавления адреса подсети для внешнего доступа
         Error error = 2;
-    }
-
-    message RemoteAccessList {
-        // Список адресов подсетей
-        repeated string subnet_address = 1;
     }
 
     message Error {
@@ -674,16 +709,11 @@ message PgRemoveRemoteAccessRequest {
 message PgRemoveRemoteAccessResponse {
     // Результат запроса
     oneof result {
-        // Результат запроса: список адресов подсетей
-        RemoteAccessList access_list = 1;
+        // Результат запроса: текущее состояние доступа со внешних адресов
+        PgRemoteAccessState state = 1;
 
         // Результат запроса: ошибка удаления адреса подсети для внешнего доступа
         Error error = 2;
-    }
-
-    message RemoteAccessList {
-        // Список адресов подсетей
-        repeated string subnet_address = 1;
     }
 
     message Error {
@@ -924,4 +954,10 @@ message PgConfig {
 
     // Тип конфигурации базы данных default/custom
     string preset_name = 2;
+}
+
+message PgRemoteAccessState {
+    bool access_allowed = 1;
+
+    repeated string subnet_address = 2;
 }
