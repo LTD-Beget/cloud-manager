@@ -97,13 +97,13 @@ service PostgresqlService {
 
     rpc addRemoteAccess(PgAddRemoteAccessRequest) returns (PgAddRemoteAccessResponse) {
         option (google.api.http) = {
-            post: "/v1/cloud/postgresql/{service_id}/remote-access/{subnet_address}"
+            post: "/v1/cloud/postgresql/{service_id}/remote-access/{subnet_address=*/**}"
         };
     }
 
     rpc removeRemoteAccess(PgRemoveRemoteAccessRequest) returns (PgRemoveRemoteAccessResponse) {
         option (google.api.http) = {
-            delete: "/v1/cloud/postgresql/{service_id}/remote-access/{subnet_address=*/*}"
+            delete: "/v1/cloud/postgresql/{service_id}/remote-access/{subnet_address=*/**}"
         };
     }
 }
