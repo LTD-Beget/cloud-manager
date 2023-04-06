@@ -623,7 +623,11 @@ message PgGetRemoteAccessStateResponse {
 }
 
 message PgSetRemoteAccessStatusRequest {
-    bool access_allowed = 1;
+    // Идентификатор сервиса в формате uuid v4
+    string service_id = 1;
+
+    // Разрешён ли доступ со внешних адресов
+    bool access_allowed = 2;
 }
 
 message PgSetRemoteAccessStatusResponse {
@@ -692,7 +696,16 @@ message PgAddRemoteAccessResponse {
             SERVICE_DISABLED = 2;
 
             // Некорректный формат адреса подсети
-            INVALID_SUBNET_ADDRESS= 3;
+            INVALID_SUBNET_ADDRESS = 3;
+
+            // IP уже добавлен или входит в ранее добавленную подсеть
+            IP_IS_IN_EXISTED_SUBNET = 4;
+
+            // Подсеть уже входит полностью или частично в добавленные ранее
+            SUBNET_IS_IN_EXISTED_SUBNET = 5;
+
+            // Подсеть является приватной
+            SUBNET_IS_PRIVATE = 6;
         }
     }
 }
@@ -734,7 +747,7 @@ message PgRemoveRemoteAccessResponse {
             SERVICE_DISABLED = 2;
 
             // Некорректный формат адреса подсети
-            INVALID_SUBNET_ADDRESS= 3;
+            INVALID_SUBNET_ADDRESS = 3;
         }
     }
 }
@@ -957,7 +970,9 @@ message PgConfig {
 }
 
 message PgRemoteAccessState {
+    // Разрешён ли доступа со внешних адресов
     bool access_allowed = 1;
 
+    // Список Адресов подсети в формате IP/Маска, например: 192.168.1.1/24
     repeated string subnet_address = 2;
 }
