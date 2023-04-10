@@ -940,6 +940,9 @@ message PgDb {
 
     // Описание базы данных
     string description = 5;
+
+    // Дата создания базы данных в формате W3C
+    string created_at = 6;
 }
 
 message Role {
@@ -959,6 +962,9 @@ message Role {
 
     // Является ли пользователь предопределенным
     bool predefined = 6;
+
+    // Дата создания роли в формате W3C
+    string created_at = 7;
 }
 
 message PgConfig {
