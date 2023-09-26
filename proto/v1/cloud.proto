@@ -126,6 +126,9 @@ message CreateRequest {
 
     // Зарезервированное поле, должно быть пустым
     string extra = 5;
+
+    // Регион, в котором будет создан сервис. По-умолчанию: ru1
+    string region = 6;
 }
 
 message CreateResponse {
