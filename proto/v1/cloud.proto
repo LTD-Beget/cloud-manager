@@ -333,6 +333,9 @@ message ServiceConfiguration {
     // Стоимость за один месяц в рублях
     double price_month = 3;
 
+    // Регион, в котором доступна конфигурация
+    string region = 6;
+
     // Параметры конфигурации сервиса
     oneof configuration {
         //Параметры конфигурации сервиса: управляемая БД MySQL 5
