@@ -305,6 +305,9 @@ message Service {
     // Сервис находится в состоянии миграции на другой хост
     bool migrating = 15;
 
+    // Регион, в котором расположен сервис
+    string region = 16;
+
     enum Status {
         // Создается
         CREATING = 0;
