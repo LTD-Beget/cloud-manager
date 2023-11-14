@@ -126,6 +126,9 @@ message CreateRequest {
 
     // Зарезервированное поле, должно быть пустым
     string extra = 5;
+
+    // Регион, в котором будет создан сервис. По-умолчанию: ru1
+    string region = 6;
 }
 
 message CreateResponse {
@@ -305,6 +308,9 @@ message Service {
     // Сервис находится в состоянии миграции на другой хост
     bool migrating = 15;
 
+    // Регион, в котором расположен сервис
+    string region = 16;
+
     enum Status {
         // Создается
         CREATING = 0;
@@ -332,6 +338,9 @@ message ServiceConfiguration {
 
     // Стоимость за один месяц в рублях
     double price_month = 3;
+
+    // Регион, в котором доступна конфигурация
+    string region = 6;
 
     // Параметры конфигурации сервиса
     oneof configuration {
