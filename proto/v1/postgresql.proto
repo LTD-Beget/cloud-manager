@@ -70,40 +70,15 @@ service PostgresqlService {
         };
     }
 
-    rpc grantAccessForRole(PgGrantAccessForRoleRequest) returns (PgGrantAccessForRoleResponse) {
-        option (google.api.http) = {
-            post: "/v1/cloud/postgresql/{service_id}/role/{role_name}/db/{db_name}/access",
-            body: "*"
-        };
-    }
-
-    rpc revokeAccessFromRole(PgRevokeAccessFromRoleRequest) returns (PgRevokeAccessFromRoleResponse) {
-        option (google.api.http) = {
-            delete: "/v1/cloud/postgresql/{service_id}/role/{role_name}/db/{db_name}/access",
-        };
-    }
-
     rpc getRemoteAccessState(PgGetRemoteAccessStateRequest) returns (PgGetRemoteAccessStateResponse) {
         option (google.api.http) = {
             get: "/v1/cloud/postgresql/{service_id}/remote-access"
         };
     }
 
-    rpc setRemoteAccessStatus(PgSetRemoteAccessStatusRequest) returns (PgSetRemoteAccessStatusResponse) {
+    rpc updateRemoteAccess(PgUpdateRemoteAccessRequest) returns (PgUpdateRemoteAccessResponse) {
         option (google.api.http) = {
-            put: "/v1/cloud/postgresql/{service_id}/remote-access/status"
-        };
-    }
-
-    rpc addRemoteAccess(PgAddRemoteAccessRequest) returns (PgAddRemoteAccessResponse) {
-        option (google.api.http) = {
-            post: "/v1/cloud/postgresql/{service_id}/remote-access"
-        };
-    }
-
-    rpc removeRemoteAccess(PgRemoveRemoteAccessRequest) returns (PgRemoveRemoteAccessResponse) {
-        option (google.api.http) = {
-            delete: "/v1/cloud/postgresql/{service_id}/remote-access"
+            patch: "/v1/cloud/postgresql/{service_id}/remote-access"
         };
     }
 }
@@ -179,28 +154,11 @@ message PgCreateDbRequest {
     // Название базы данных
     string db_name = 2;
 
-    // Владелец создаваемой базы данных
-    oneof owner {
-        // Владелец создаваемой базы данных: имя существующей роли
-        string owner_name = 3;
-
-        // Владелец создаваемой базы данных: данные для создания новой роли
-        Role owner_role = 4;
-    }
+    // Владелец создаваемой базы данных: имя существующей роли
+    string owner_name = 3;
 
     // Описание базы данных (необязательное поле)
-    string description = 5;
-
-    message Role {
-        // Имя роли
-        string name = 1;
-
-        // Пароль
-        string password = 2;
-
-        // Сохранить пароль для доступа из Adminer
-        bool save_adminer_password = 3;
-    }
+    string description = 4;
 }
 
 message PgCreateDbResponse {
@@ -247,15 +205,6 @@ message PgCreateDbResponse {
 
             // Имя базы данных зарезервировано системой
             DB_NAME_IS_RESERVED = 8;
-
-            // Некорректное имя роли
-            INVALID_ROLE_NAME = 9;
-
-            // Создаваемая роль уже существует
-            ROLE_ALREADY_EXISTS = 10;
-
-            // Имя роли зарезервировано системой
-            ROLE_NAME_IS_RESERVED = 11;
         }
     }
 }
@@ -328,9 +277,6 @@ message PgCreateRoleRequest {
 
     // Список ролей наследуемых пользователем
     repeated string parent_role = 5;
-
-    // Список имен БД, доступных пользователю
-    repeated string db_access = 6;
 }
 
 message PgCreateRoleResponse {
@@ -360,13 +306,13 @@ message PgCreateRoleResponse {
             // Доступ к сервису заблокирован
             SERVICE_DISABLED = 2;
 
-            // Некорректное имя пользователя
+            // Некорректное имя роли
             INVALID_ROLE_NAME = 3;
 
             // Некорректный пароль
             INVALID_ACCESS_PASSWORD = 4;
 
-            // Создаваемый пользователь уже существует
+            // Создаваемая роль уже существует
             ROLE_ALREADY_EXISTS = 5;
 
             // Словарный пароль (находится в черном списке)
@@ -375,11 +321,8 @@ message PgCreateRoleResponse {
             // Список ролей содержит некорректную (несуществующую) роль
             INVALID_ROLE_LIST = 7;
 
-            // Список имен БД содержит некорректную (несуществующую) базу данных
-            INVALID_DB_LIST = 8;
-
-            // Имя пользователя зарезервировано системой
-            ROLE_NAME_IS_RESERVED = 9;
+            // Имя роли зарезервировано системой
+            ROLE_NAME_IS_RESERVED = 8;
         }
     }
 }
@@ -422,7 +365,7 @@ message PgRemoveRoleResponse {
             // Доступ к сервису заблокирован
             SERVICE_DISABLED = 2;
 
-            // Пользователь явялется владельцем БД и не может быть удален
+            // Пользователь является владельцем БД и не может быть удален
             ROLE_IS_DB_OWNER = 3;
 
             // Пользователь является предопределенным и не может быть удален
@@ -528,91 +471,6 @@ message PgUpdateDbResponse {
     }
 }
 
-message PgGrantAccessForRoleRequest {
-    // Идентификатор сервиса в формате uuid v4
-    string service_id = 1;
-
-    // Имя пользователя
-    string role_name = 2;
-
-    // Имя БД
-    string db_name = 3;
-}
-
-message PgGrantAccessForRoleResponse {
-    // Результат запроса
-    oneof result {
-        // Результат запроса: TODO
-        Role role = 1;
-
-        // Результат запроса: ошибка TODO
-        Error error = 2;
-    }
-
-    message Error {
-        // Описание ошибки
-        string message = 1;
-
-        // Код ошибки
-        Code code = 2;
-
-        enum Code {
-            // Зарезервированный код ошибки
-            _ = 0;
-
-            // Некорректный статус ресурса (отличный от running/stopped)
-            INVALID_STATE = 1;
-
-            // Доступ к сервису заблокирован
-            SERVICE_DISABLED = 2;
-        }
-    }
-}
-
-message PgRevokeAccessFromRoleRequest {
-    // Идентификатор сервиса в формате uuid v4
-    string service_id = 1;
-
-    // Имя пользователя
-    string role_name = 2;
-
-    // Имя БД
-    string db_name = 3;
-}
-
-message PgRevokeAccessFromRoleResponse {
-    // Результат запроса
-    oneof result {
-        // Результат запроса: TODO
-        Role role = 1;
-
-        // Результат запроса: ошибка TODO
-        Error error = 2;
-    }
-
-    message Error {
-        // Описание ошибки
-        string message = 1;
-
-        // Код ошибки
-        Code code = 2;
-
-        enum Code {
-            // Зарезервированный код ошибки
-            _ = 0;
-
-            // Некорректный статус ресурса (отличный от running/stopped)
-            INVALID_STATE = 1;
-
-            // Доступ к сервису заблокирован
-            SERVICE_DISABLED = 2;
-
-            // Пользователь явялется владельцем БД, доступ не может быть удален
-            ROLE_IS_DB_OWNER = 3;
-        }
-    }
-}
-
 message PgGetRemoteAccessStateRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
@@ -622,53 +480,16 @@ message PgGetRemoteAccessStateResponse {
     PgRemoteAccessState state = 1;
 }
 
-message PgSetRemoteAccessStatusRequest {
-    // Идентификатор сервиса в формате uuid v4
-    string service_id = 1;
-
-    // Разрешён ли доступ со внешних адресов
-    bool access_allowed = 2;
-}
-
-message PgSetRemoteAccessStatusResponse {
-    // Результат запроса
-    oneof result {
-        // Результат запроса: текущее состояние доступа со внешних адресов
-        PgRemoteAccessState state = 1;
-
-        // Результат запроса: ошибка добавления адреса подсети для внешнего доступа
-        Error error = 2;
-    }
-
-    message Error {
-        // Описание ошибки
-        string message = 1;
-
-        // Код ошибки
-        Code code = 2;
-
-        enum Code {
-            // Зарезервированный код ошибки
-            _ = 0;
-
-            // Некорректный статус ресурса (отличный от running/stopped)
-            INVALID_STATE = 1;
-
-            // Доступ к сервису заблокирован
-            SERVICE_DISABLED = 2;
-        }
-    }
-}
-
-message PgAddRemoteAccessRequest {
+message PgUpdateRemoteAccessRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
     // Адрес подсети в формате IP/Маска, например: 192.168.1.1/24
+    // Пустой список - внешний доступ запрещен
     string subnet_address = 2;
 }
 
-message PgAddRemoteAccessResponse {
+message PgUpdateRemoteAccessResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: текущее состояние доступа со внешних адресов
@@ -706,48 +527,6 @@ message PgAddRemoteAccessResponse {
 
             // Подсеть является приватной
             SUBNET_IS_PRIVATE = 6;
-        }
-    }
-}
-
-
-message PgRemoveRemoteAccessRequest {
-    // Идентификатор сервиса в формате uuid v4
-    string service_id = 1;
-
-    // Адрес подсети в формате IP/Маска, например: 192.168.1.1/24
-    string subnet_address = 2;
-}
-
-message PgRemoveRemoteAccessResponse {
-    // Результат запроса
-    oneof result {
-        // Результат запроса: текущее состояние доступа со внешних адресов
-        PgRemoteAccessState state = 1;
-
-        // Результат запроса: ошибка удаления адреса подсети для внешнего доступа
-        Error error = 2;
-    }
-
-    message Error {
-        // Описание ошибки
-        string message = 1;
-
-        // Код ошибки
-        Code code = 2;
-
-        enum Code {
-            // Зарезервированный код ошибки
-            _ = 0;
-
-            // Некорректный статус ресурса (отличный от running/stopped)
-            INVALID_STATE = 1;
-
-            // Доступ к сервису заблокирован
-            SERVICE_DISABLED = 2;
-
-            // Некорректный формат адреса подсети
-            INVALID_SUBNET_ADDRESS = 3;
         }
     }
 }
@@ -970,9 +749,7 @@ message PgConfig {
 }
 
 message PgRemoteAccessState {
-    // Разрешён ли доступа со внешних адресов
-    bool access_allowed = 1;
-
     // Список Адресов подсети в формате IP/Маска, например: 192.168.1.1/24
-    repeated string subnet_address = 2;
+    // Пустой список - внешний доступ запрещен
+    repeated string subnet_address = 1;
 }
