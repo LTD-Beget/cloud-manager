@@ -1,6 +1,6 @@
 syntax = 'proto3';
 
-package beget.cloud.v1.mysqlStatistic;
+package beget.cloud.v1.mysqlStatistic.mysqlStatistic;
 import "google/api/annotations.proto";
 import "cloud/proto/v1/structures.proto";
 

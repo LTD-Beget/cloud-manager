@@ -2,8 +2,8 @@ syntax = 'proto3';
 
 package beget.cloud.v1.cloud;
 import "google/api/annotations.proto";
-import "cloud/proto/v1/mysql.proto";
-import "cloud/proto/v1/postgresql.proto";
+import "cloud/proto/v1/mysql/mysql.proto";
+import "cloud/proto/v1/postgresql/postgresql.proto";
 // do not use structures.proto here for avoid recursive import
 
 // Управление сервисами
@@ -122,9 +122,9 @@ message CreateRequest {
     // Дополнительные параметры создаваемого сервиса
     oneof params {
         // Дополнительные параметры создаваемого сервиса: управляемая БД MySQL
-        mysql.CreateParams mysql_params = 4;
+        mysql.mysql.CreateParams mysql_params = 4;
         // Дополнительные параметры создаваемого сервиса: управляемая БД PostgreSQL
-        postgresql.PgCreateParams postgresql_params = 6;
+        postgresql.postgresql.CreateParams postgresql_params = 6;
     }
 
     // Зарезервированное поле, должно быть пустым
@@ -141,10 +141,10 @@ message CreateResponse {
         Service service = 1;
 
         // Результат запроса: ошибка при создании MySQL
-        mysql.CreateError mysql_error = 2;
+        mysql.mysql.CreateError mysql_error = 2;
 
         // Результат запроса: ошибка при создании PostgreSQL
-        postgresql.PgCreateError postgresql_error = 3;
+        postgresql.postgresql.CreateError postgresql_error = 3;
     }
 }
 
@@ -293,16 +293,16 @@ message Service {
     // Информация о конкретном сервисе
     oneof entity {
         // Информация о конкретном сервисе: управляемая БД MySQL 5
-        mysql.Mysql5 mysql5 = 9;
+        mysql.mysql.Mysql5 mysql5 = 9;
 
         // Информация о конкретном сервисе: управляемая БД MySQL 8
-        mysql.Mysql8 mysql8 = 10;
+        mysql.mysql.Mysql8 mysql8 = 10;
 
         // Информация о конкретном сервисе: управляемая БД PostgreSQL 15
-        postgresql.Postgresql15 postgresql15 = 16;
+        postgresql.postgresql.Postgresql15 postgresql15 = 16;
 
         // Информация о конкретном сервисе: управляемая БД PostgreSQL 14
-        postgresql.Postgresql14 postgresql14 = 17;
+        postgresql.postgresql.Postgresql14 postgresql14 = 17;
     }
 
     // Заблокирован ли сервис
@@ -357,15 +357,15 @@ message ServiceConfiguration {
     // Параметры конфигурации сервиса
     oneof configuration {
         //Параметры конфигурации сервиса: управляемая БД MySQL 5
-        mysql.Mysql5Configuration mysql5 = 4;
+        mysql.mysql.Mysql5Configuration mysql5 = 4;
 
         // Параметры конфигурации сервиса: управляемая БД MySQL 8
-        mysql.Mysql8Configuration mysql8 = 5;
+        mysql.mysql.Mysql8Configuration mysql8 = 5;
 
         // Параметры конфигурации сервиса: управляемая БД PostgreSQL 15
-        postgresql.Postgresql15Configuration postgresql15 = 6;
+        postgresql.postgresql.Postgresql15Configuration postgresql15 = 6;
 
         // Параметры конфигурации сервиса: управляемая БД PostgreSQL 14
-        postgresql.Postgresql14Configuration postgresql14 = 7;
+        postgresql.postgresql.Postgresql14Configuration postgresql14 = 7;
     }
 }
