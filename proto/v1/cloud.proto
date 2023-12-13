@@ -124,7 +124,7 @@ message CreateRequest {
         // Дополнительные параметры создаваемого сервиса: управляемая БД MySQL
         mysql.mysql.CreateParams mysql_params = 4;
         // Дополнительные параметры создаваемого сервиса: управляемая БД PostgreSQL
-        postgresql.postgresql.CreateParams postgresql_params = 6;
+        postgresql.CreateParams postgresql_params = 6;
     }
 
     // Зарезервированное поле, должно быть пустым
@@ -144,7 +144,7 @@ message CreateResponse {
         mysql.mysql.CreateError mysql_error = 2;
 
         // Результат запроса: ошибка при создании PostgreSQL
-        postgresql.postgresql.CreateError postgresql_error = 3;
+        postgresql.CreateError postgresql_error = 3;
     }
 }
 
@@ -299,10 +299,10 @@ message Service {
         mysql.mysql.Mysql8 mysql8 = 10;
 
         // Информация о конкретном сервисе: управляемая БД PostgreSQL 15
-        postgresql.postgresql.Postgresql15 postgresql15 = 16;
+        postgresql.Postgresql15 postgresql15 = 16;
 
         // Информация о конкретном сервисе: управляемая БД PostgreSQL 14
-        postgresql.postgresql.Postgresql14 postgresql14 = 17;
+        postgresql.Postgresql14 postgresql14 = 17;
     }
 
     // Заблокирован ли сервис
@@ -363,9 +363,9 @@ message ServiceConfiguration {
         mysql.mysql.Mysql8Configuration mysql8 = 5;
 
         // Параметры конфигурации сервиса: управляемая БД PostgreSQL 15
-        postgresql.postgresql.Postgresql15Configuration postgresql15 = 6;
+        postgresql.Postgresql15Configuration postgresql15 = 6;
 
         // Параметры конфигурации сервиса: управляемая БД PostgreSQL 14
-        postgresql.postgresql.Postgresql14Configuration postgresql14 = 7;
+        postgresql.Postgresql14Configuration postgresql14 = 7;
     }
 }
