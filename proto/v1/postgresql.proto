@@ -240,9 +240,6 @@ message PgRemoveDbResponse {
 
             // Доступ к сервису заблокирован
             SERVICE_DISABLED = 2;
-
-            // Имя базы данных зарезервировано системой
-            DB_NAME_IS_RESERVED = 3;
         }
     }
 }
