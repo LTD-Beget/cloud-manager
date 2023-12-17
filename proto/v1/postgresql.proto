@@ -194,17 +194,11 @@ message PgCreateDbResponse {
             // База данных с таким именем уже существует
             DB_ALREADY_EXISTS = 4;
 
-            // Некорректный пароль
-            ROLE_INVALID_ACCESS_PASSWORD = 5;
-
             // Некорректное описание базы данных
-            INVALID_DESCRIPTION = 6;
-
-            // Словарный пароль (находится в черном списке)
-            ROLE_BLACKLISTED_ACCESS_PASSWORD = 7;
+            INVALID_DESCRIPTION = 5;
 
             // Имя базы данных зарезервировано системой
-            DB_NAME_IS_RESERVED = 8;
+            DB_NAME_IS_RESERVED = 6;
         }
     }
 }
