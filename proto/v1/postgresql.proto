@@ -716,19 +716,17 @@ message Role {
     // Имя пользователя
     string name = 1;
 
+    // Пароль пользователя
     string password = 2;
 
     // Был ли сохранен пароль для доступа из Adminer
     bool adminer_password_saved = 3;
 
-    // Список имен БД, доступных пользователю
-    repeated string db_access = 4;
-
     // Список ролей наследуемых пользователем
-    repeated string parent_role = 5;
+    repeated string parent_role = 4;
 
     // Является ли пользователь предопределенным
-    bool predefined = 6;
+    bool predefined = 5;
 }
 
 message PgConfig {
