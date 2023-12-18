@@ -70,7 +70,7 @@ service PostgresqlService {
         };
     }
 
-    rpc getRemoteAccessState(PgGetRemoteAccessStateRequest) returns (PgGetRemoteAccessStateResponse) {
+    rpc getRemoteAccess(PgGetRemoteAccessRequest) returns (PgGetRemoteAccessResponse) {
         option (google.api.http) = {
             get: "/v1/cloud/postgresql/{service_id}/remote-access"
         };
@@ -462,12 +462,12 @@ message PgUpdateDbResponse {
     }
 }
 
-message PgGetRemoteAccessStateRequest {
+message PgGetRemoteAccessRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 }
 
-message PgGetRemoteAccessStateResponse {
+message PgGetRemoteAccessResponse {
     PgRemoteAccessState state = 1;
 }
 
@@ -477,7 +477,7 @@ message PgUpdateRemoteAccessRequest {
 
     // Адрес подсети в формате IP/Маска, например: 192.168.1.1/24
     // Пустой список - внешний доступ запрещен
-    string subnet_address = 2;
+    repeated string subnet_address = 2;
 }
 
 message PgUpdateRemoteAccessResponse {
