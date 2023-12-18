@@ -301,7 +301,7 @@ message PgCreateRoleResponse {
             INVALID_ROLE_NAME = 3;
 
             // Некорректный пароль
-            INVALID_ACCESS_PASSWORD = 4;
+            INVALID_PASSWORD = 4;
 
             // Создаваемая роль уже существует
             ROLE_ALREADY_EXISTS = 5;
@@ -309,8 +309,8 @@ message PgCreateRoleResponse {
             // Словарный пароль (находится в черном списке)
             BLACKLISTED_ACCESS_PASSWORD = 6;
 
-            // Список ролей содержит некорректную (несуществующую) роль
-            INVALID_ROLE_LIST = 7;
+            // Список родительских ролей содержит недопустимую роль
+            INVALID_PARENT_ROLE_LIST = 7;
 
             // Имя роли зарезервировано системой
             ROLE_NAME_IS_RESERVED = 8;
