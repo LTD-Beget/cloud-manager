@@ -692,5 +692,5 @@ message Config {
     map<string, string> param = 1;
 
     // Тип конфигурации базы данных default/custom
-    string preset_name = 2;
+    string preset_name = 3;
 }

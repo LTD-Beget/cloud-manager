@@ -124,14 +124,14 @@ message CreateRequest {
         // Дополнительные параметры создаваемого сервиса: управляемая БД MySQL
         mysql.CreateParams mysql_params = 4;
         // Дополнительные параметры создаваемого сервиса: управляемая БД PostgreSQL
-        postgresql.PgCreateParams postgresql_params = 6;
+        postgresql.PgCreateParams postgresql_params = 7;
     }
 
     // Зарезервированное поле, должно быть пустым
     string extra = 5;
 
     // Регион, в котором будет создан сервис. По-умолчанию: ru1
-    string region = 7;
+    string region = 6;
 }
 
 message CreateResponse {
@@ -299,10 +299,10 @@ message Service {
         mysql.Mysql8 mysql8 = 10;
 
         // Информация о конкретном сервисе: управляемая БД PostgreSQL 15
-        postgresql.Postgresql15 postgresql15 = 16;
+        postgresql.Postgresql15 postgresql15 = 17;
 
         // Информация о конкретном сервисе: управляемая БД PostgreSQL 14
-        postgresql.Postgresql14 postgresql14 = 17;
+        postgresql.Postgresql14 postgresql14 = 18;
     }
 
     // Заблокирован ли сервис
@@ -321,7 +321,7 @@ message Service {
     bool migrating = 15;
 
     // Регион, в котором расположен сервис
-    string region = 18;
+    string region = 16;
 
     enum Status {
         // Создается
@@ -352,7 +352,7 @@ message ServiceConfiguration {
     double price_month = 3;
 
     // Регион, в котором доступна конфигурация
-    string region = 8;
+    string region = 6;
 
     // Параметры конфигурации сервиса
     oneof configuration {
@@ -363,9 +363,9 @@ message ServiceConfiguration {
         mysql.Mysql8Configuration mysql8 = 5;
 
         // Параметры конфигурации сервиса: управляемая БД PostgreSQL 15
-        postgresql.Postgresql15Configuration postgresql15 = 6;
+        postgresql.Postgresql15Configuration postgresql15 = 7;
 
         // Параметры конфигурации сервиса: управляемая БД PostgreSQL 14
-        postgresql.Postgresql14Configuration postgresql14 = 7;
+        postgresql.Postgresql14Configuration postgresql14 = 8;
     }
 }
