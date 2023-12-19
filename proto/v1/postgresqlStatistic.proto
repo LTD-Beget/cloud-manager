@@ -1,13 +1,13 @@
 syntax = 'proto3';
 
-package beget.cloud.v1.mysqlStatistic;
+package beget.cloud.v1.postgresqlStatistic;
 import "google/api/annotations.proto";
 import "cloud/proto/v1/structures.proto";
 
-// Статистика MySQL
+// Статистика PostgreSQL
 //
-// Предоставляет методы для для получения статистики по управляемой БД MySQL.
-service MysqlStatisticService {
+// Предоставляет методы для для получения статистики по управляемой БД PostgreSQL.
+service PostgresqlStatisticService {
     // Получить статистику о использовании CPU
     //
     // Возвращает статистику о использовании CPU за указанный период.
@@ -16,7 +16,7 @@ service MysqlStatisticService {
     // "Получить информацию о сервисах" из API "Управляемые сервисы".
     rpc getCpu(GetCpuRequest) returns (GetCpuResponse) {
         option (google.api.http) = {
-            get: "/v1/cloud/mysql/{service_id}/statistic/cpu"
+            get: "/v1/cloud/postgresql/{service_id}/statistic/cpu"
         };
     }
 
@@ -28,7 +28,7 @@ service MysqlStatisticService {
     // "Получить информацию о сервисах" из API "Управляемые сервисы".
     rpc getMemory(GetMemoryRequest) returns (GetMemoryResponse) {
         option (google.api.http) = {
-            get: "/v1/cloud/mysql/{service_id}/statistic/memory"
+            get: "/v1/cloud/postgresql/{service_id}/statistic/memory"
         };
     }
 
@@ -40,7 +40,7 @@ service MysqlStatisticService {
     // "Получить информацию о сервисах" из API "Управляемые сервисы".
     rpc getDisk(GetDiskRequest) returns (GetDiskResponse) {
         option (google.api.http) = {
-            get: "/v1/cloud/mysql/{service_id}/statistic/disk"
+            get: "/v1/cloud/postgresql/{service_id}/statistic/disk"
         };
     }
 
@@ -52,7 +52,7 @@ service MysqlStatisticService {
     // "Получить информацию о сервисах" из API "Управляемые сервисы".
     rpc getDiskUsage(GetDiskUsageRequest) returns (GetDiskUsageResponse) {
         option (google.api.http) = {
-            get: "/v1/cloud/mysql/{service_id}/statistic/disk-usage"
+            get: "/v1/cloud/postgresql/{service_id}/statistic/disk-usage"
         };
     }
 
@@ -64,7 +64,7 @@ service MysqlStatisticService {
     // "Получить информацию о сервисах" из API "Управляемые сервисы".
     rpc getNetwork(GetNetworkRequest) returns (GetNetworkResponse) {
         option (google.api.http) = {
-            get: "/v1/cloud/mysql/{service_id}/statistic/network"
+            get: "/v1/cloud/postgresql/{service_id}/statistic/network"
         };
     }
 
@@ -76,7 +76,7 @@ service MysqlStatisticService {
     // "Получить информацию о сервисах" из API "Управляемые сервисы".
     rpc getLoadAverage(GetLoadAverageRequest) returns (GetLoadAverageResponse) {
         option (google.api.http) = {
-            get: "/v1/cloud/mysql/{service_id}/statistic/load-average"
+            get: "/v1/cloud/postgresql/{service_id}/statistic/load-average"
         };
     }
 
@@ -88,7 +88,7 @@ service MysqlStatisticService {
     // "Получить информацию о сервисах" из API "Управляемые сервисы".
     rpc getCpuDetails(GetCpuDetailsRequest) returns (GetCpuDetailsResponse) {
         option (google.api.http) = {
-            get: "/v1/cloud/mysql/{service_id}/statistic/cpu-details"
+            get: "/v1/cloud/postgresql/{service_id}/statistic/cpu-details"
         };
     }
 }

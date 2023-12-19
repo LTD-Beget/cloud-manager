@@ -1,168 +1,115 @@
 syntax = 'proto3';
 
-package beget.cloud.v1.mysql;
+package beget.cloud.v1.postgresql;
 import "google/api/annotations.proto";
 import "cloud/proto/v1/structures.proto";
 
-// Управление MySQL
-//
-// Предоставляет набор методов для работы с базами данных, доступами и параметрами МySQL.
-service MysqlService {
-    // Получить параметры MySQL
-    //
-    // Возвращает список текущих параметров MySQL.
-    //
-    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
-    // "Получить информацию о сервисах" из API "Управляемые сервисы".
-    rpc getConfig(GetConfigRequest) returns (GetConfigResponse) {
+service PostgresqlService {
+    rpc getConfig(PgGetConfigRequest) returns (PgGetConfigResponse) {
         option (google.api.http) = {
-            get: "/v1/cloud/mysql/{service_id}/config",
+            get: "/v1/cloud/postgresql/{service_id}/config",
         };
     }
 
-    // Изменить параметры MySQL
-    //
-    // Меняет параметры MySQL на заданные.
-    //
-    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
-    // "Получить информацию о сервисах" из API "Управляемые сервисы".
-    rpc setConfig(SetConfigRequest) returns (SetConfigResponse) {
+    rpc setConfig(PgSetConfigRequest) returns (PgSetConfigResponse) {
         option (google.api.http) = {
-            put: "/v1/cloud/mysql/{service_id}/config",
+            put: "/v1/cloud/postgresql/{service_id}/config",
             body: "*"
         };
     }
 
-    // Получить список баз данных
-    //
-    // Возвращает список баз данных в MySQL.
-    //
-    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
-    // "Получить информацию о сервисах" из API "Управляемые сервисы".
-    rpc getDbList(GetDbListRequest) returns (GetDbListResponse) {
+    rpc getDbList(PgGetDbListRequest) returns (PgGetDbListResponse) {
         option (google.api.http) = {
-            get: "/v1/cloud/mysql/{service_id}/db",
+            get: "/v1/cloud/postgresql/{service_id}/db",
         };
     }
 
-    // Создать базу данных
-    //
-    // Создает новую базу данных в MySQL.
-    //
-    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
-    // "Получить информацию о сервисах" из API "Управляемые сервисы".
-    rpc createDb(CreateDbRequest) returns (CreateDbResponse) {
+    rpc createDb(PgCreateDbRequest) returns (PgCreateDbResponse) {
         option (google.api.http) = {
-            post: "/v1/cloud/mysql/{service_id}/db",
+            post: "/v1/cloud/postgresql/{service_id}/db",
             body: "*"
         };
     }
 
-    // Удалить базу данных
-    //
-    // Удаляет указанную базу данных из MySQL со всеми хранящимися в ней данными.
-    //
-    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
-    // "Получить информацию о сервисах" из API "Управляемые сервисы".
-    //
-    // Для получения доступных имён баз данных `db_name` необходимо использовать метод
-    // "Получить список баз данных" из API "Управляемые сервисы".
-    rpc removeDb(RemoveDbRequest) returns (RemoveDbResponse) {
+    rpc updateDb(PgUpdateDbRequest) returns (PgUpdateDbResponse){
         option (google.api.http) = {
-            delete: "/v1/cloud/mysql/{service_id}/db/{db_name}",
-        };
-    }
-
-    // Создать доступ для базы данных
-    //
-    // Создает отдельный доступ для базы данных.
-    //
-    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
-    // "Получить информацию о сервисах" из API "Управляемые сервисы".
-    //
-    // Для получения доступных имён баз данных `db_name` необходимо использовать метод
-    // "Получить список баз данных" из API "Управляемые сервисы".
-    rpc createAccess(CreateAccessRequest) returns (CreateAccessResponse) {
-        option (google.api.http) = {
-            post: "/v1/cloud/mysql/{service_id}/db/{db_name}/access",
+            patch: "/v1/cloud/postgresql/{service_id}/db/{db_name}",
             body: "*"
         };
     }
 
-    // Удалить доступ базы данных
-    //
-    // Удаляет указанный отдельный доступ для базы данных.
-    //
-    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
-    // "Получить информацию о сервисах" из API "Управляемые сервисы".
-    //
-    // Для получения доступных имён баз данных `db_name` и хостов `host` необходимо использовать метод
-    // "Получить список баз данных" из API "Управляемые сервисы".
-    rpc removeAccess(RemoveAccessRequest) returns (RemoveAccessResponse) {
+    rpc removeDb(PgRemoveDbRequest) returns (PgRemoveDbResponse) {
         option (google.api.http) = {
-            delete: "/v1/cloud/mysql/{service_id}/db/{db_name}/access/{host}",
+            delete: "/v1/cloud/postgresql/{service_id}/db/{db_name}",
         };
     }
 
-    // Изменить пароль для доступа
-    //
-    // Изменяет пароль для указанного доступа к базе данных.
-    //
-    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
-    // "Получить информацию о сервисах" из API "Управляемые сервисы".
-    //
-    // Для получения доступных имён баз данных `db_name` и хостов `host` необходимо использовать метод
-    // "Получить список баз данных" из API "Управляемые сервисы".
-    rpc changeAccessPassword(ChangeAccessPasswordRequest) returns (ChangeAccessPasswordResponse) {
+    rpc getRoleList(PgGetRoleListRequest) returns (PgGetRoleListResponse) {
         option (google.api.http) = {
-            patch: "/v1/cloud/mysql/{service_id}/db/{db_name}/access/{host}",
+            get: "/v1/cloud/postgresql/{service_id}/role"
+        };
+    }
+
+    rpc createRole(PgCreateRoleRequest) returns (PgCreateRoleResponse) {
+        option (google.api.http) = {
+            post: "/v1/cloud/postgresql/{service_id}/role",
             body: "*"
         };
     }
 
-    // Обновить описание базы данных
-    //
-    // Изменяет описание базы данных.
-    //
-    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
-    // "Получить информацию о сервисах" из API "Управляемые сервисы".
-    //
-    // Для получения доступных имён баз данных `db_name` необходимо использовать метод
-    // "Получить список баз данных" из API "Управляемые сервисы".
-    rpc updateDb(UpdateDbRequest) returns (UpdateDbResponse){
+    rpc updateRole(PgUpdateRoleRequest) returns (PgUpdateRoleResponse) {
         option (google.api.http) = {
-            patch: "/v1/cloud/mysql/{service_id}/db/{db_name}",
+            patch: "/v1/cloud/postgresql/{service_id}/role/{role_name}",
+            body: "*"
+        };
+    }
+
+    rpc removeRole(PgRemoveRoleRequest) returns (PgRemoveRoleResponse) {
+        option (google.api.http) = {
+            delete: "/v1/cloud/postgresql/{service_id}/role/{role_name}",
+        };
+    }
+
+    rpc getRemoteAccess(PgGetRemoteAccessRequest) returns (PgGetRemoteAccessResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/postgresql/{service_id}/remote-access"
+        };
+    }
+
+    rpc updateRemoteAccess(PgUpdateRemoteAccessRequest) returns (PgUpdateRemoteAccessResponse) {
+        option (google.api.http) = {
+            put: "/v1/cloud/postgresql/{service_id}/remote-access",
             body: "*"
         };
     }
 }
 
-message GetConfigRequest {
+message PgGetConfigRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 }
 
-message GetConfigResponse {
+message PgGetConfigResponse {
     // Параметры базы данных
-    Config config = 1;
+    PgConfig config = 1;
 }
 
-message SetConfigRequest {
+message PgSetConfigRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
-    // Список параметров для конфигурации базы данных (my.cnf)
+    // Список параметров для конфигурации базы данных
     map<string, string> param = 2;
 
     // Тип конфигурации базы данных default/custom (необязательное поле)
     string preset_name = 3;
 }
 
-message SetConfigResponse {
+message PgSetConfigResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: информация о текущей конфигурации базы данных
-        Config config = 1;
+        PgConfig config = 1;
 
         // Результат запроса: ошибка при изменении конфигурации базы данных
         Error error = 2;
@@ -191,38 +138,35 @@ message SetConfigResponse {
     }
 }
 
-message GetDbListRequest {
+message PgGetDbListRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 }
 
-message GetDbListResponse {
+message PgGetDbListResponse {
     // Информация о базах данных
-    repeated Db db = 1;
+    repeated PgDb db = 1;
 }
 
-message CreateDbRequest {
+message PgCreateDbRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
     // Название базы данных
     string db_name = 2;
 
-    // Пароль для доступа localhost
-    string password = 3;
-
-    // Сохранить пароль для доступа из PhpMyAdmin
-    bool save_pma_password = 4;
+    // Владелец создаваемой базы данных: имя существующей роли
+    string owner_name = 3;
 
     // Описание базы данных (необязательное поле)
-    string description = 5;
+    string description = 4;
 }
 
-message CreateDbResponse {
+message PgCreateDbResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: информация о базе данных
-        Db db = 1;
+        PgDb db = 1;
 
         // Результат запроса: ошибка при создании базы данных
         Error error = 2;
@@ -251,19 +195,16 @@ message CreateDbResponse {
             // База данных с таким именем уже существует
             DB_ALREADY_EXISTS = 4;
 
-            // Некорректный пароль
-            INVALID_ACCESS_PASSWORD = 5;
-
             // Некорректное описание базы данных
-            INVALID_DESCRIPTION = 6;
+            INVALID_DESCRIPTION = 5;
 
-            // Словарный пароль (находится в черном списке)
-            BLACKLISTED_ACCESS_PASSWORD = 7;
+            // Имя базы данных зарезервировано системой
+            DB_NAME_IS_RESERVED = 6;
         }
     }
 }
 
-message RemoveDbRequest {
+message PgRemoveDbRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
@@ -271,7 +212,7 @@ message RemoveDbRequest {
     string db_name = 2;
 }
 
-message RemoveDbResponse {
+message PgRemoveDbResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: успешное удаление базы данных
@@ -304,30 +245,39 @@ message RemoveDbResponse {
     }
 }
 
-message CreateAccessRequest {
+message PgGetRoleListRequest {
+    // Идентификатор сервиса в формате uuid v4
+    string service_id = 1;
+}
+
+message PgGetRoleListResponse {
+    repeated Role role = 1;
+}
+
+message PgCreateRoleRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
-    // Имя базы данных
-    string db_name = 2;
-
-    // Хост, для которого создается доступ (ip/domain)
-    string host = 3;
+    // Имя пользователя
+    string role_name = 2;
 
     // Пароль
-    string password = 4;
+    string password = 3;
 
-    // Сохранить пароль для доступа из PhpMyAdmin
-    bool save_pma_password = 5;
+    // Сохранить пароль для доступа из Adminer
+    bool save_adminer_password = 4;
+
+    // Список ролей наследуемых пользователем
+    repeated string parent_role = 5;
 }
 
-message CreateAccessResponse {
+message PgCreateRoleResponse {
     // Результат запроса
     oneof result {
-        // Результат запроса: информация о доступе к базе данных
-        Db.Access access = 1;
+        // Результат запроса: информация о пользователе
+        Role role = 1;
 
-        // Результат запроса: ошибка при создании доступа к базе данных
+        // Результат запроса: ошибка при создании пользователя
         Error error = 2;
     }
 
@@ -348,39 +298,42 @@ message CreateAccessResponse {
             // Доступ к сервису заблокирован
             SERVICE_DISABLED = 2;
 
-            // Некорректное имя хоста
-            INVALID_ACCESS_HOST = 3;
+            // Некорректное имя роли
+            INVALID_ROLE_NAME = 3;
 
             // Некорректный пароль
-            INVALID_ACCESS_PASSWORD = 4;
+            INVALID_PASSWORD = 4;
 
-            // Создаваемый доступ уже существует
-            ACCESS_ALREADY_EXISTS = 5;
+            // Создаваемая роль уже существует
+            ROLE_ALREADY_EXISTS = 5;
 
             // Словарный пароль (находится в черном списке)
             BLACKLISTED_ACCESS_PASSWORD = 6;
+
+            // Список родительских ролей содержит недопустимую роль
+            INVALID_PARENT_ROLE_LIST = 7;
+
+            // Имя роли зарезервировано системой
+            ROLE_NAME_IS_RESERVED = 8;
         }
     }
 }
 
-message RemoveAccessRequest {
+message PgRemoveRoleRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
-    // Имя базы данных
-    string db_name = 2;
-
-    // Хост (ip/domain)
-    string host = 3;
+    // Имя пользователя
+    string role_name = 2;
 }
 
-message RemoveAccessResponse {
+message PgRemoveRoleResponse {
     // Результат запроса
     oneof result {
-        // Результат запроса: успешное удаления доступа базы данных
+        // Результат запроса: успешное удаление пользователя
         Success success = 1;
 
-        // Результат запроса: ошибка удаления доступа базы данных
+        // Результат запроса: ошибка удаления пользователя
         Error error = 2;
     }
 
@@ -403,34 +356,40 @@ message RemoveAccessResponse {
 
             // Доступ к сервису заблокирован
             SERVICE_DISABLED = 2;
+
+            // Пользователь является владельцем БД и не может быть удален
+            ROLE_IS_DB_OWNER = 3;
+
+            // Пользователь является предопределенным и не может быть удален
+            ROLE_IS_PREDEFINED = 4;
         }
     }
 }
 
-message ChangeAccessPasswordRequest {
+message PgUpdateRoleRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
-    // Имя базы данных
-    string db_name = 2;
-
-    // Хост (ip/domain)
-    string host = 3;
+    // Имя пользователя
+    string role_name = 2;
 
     // Пароль
-    string password = 4;
+    string password = 3;
 
-    // Сохранить пароль для доступа из PhpMyAdmin
-    bool save_pma_password = 5;
+    // Сохранить пароль для доступа из Adminer
+    bool save_adminer_password = 4;
+
+    // Список ролей наследуемых пользователем
+    repeated string parent_role = 5;
 }
 
-message ChangeAccessPasswordResponse {
+message PgUpdateRoleResponse {
     // Результат запроса
     oneof result {
-        // Результат запроса: информация о доступе к базе данных
-        Db.Access access = 1;
+        // Результат запроса: информация о пользователе
+        Role role = 1;
 
-        // Результат запроса: ошибка изменения доступа к базе данных
+        // Результат запроса: ошибка изменения пользователя
         Error error = 2;
     }
 
@@ -456,11 +415,17 @@ message ChangeAccessPasswordResponse {
 
             // Словарный пароль (находится в черном списке)
             BLACKLISTED_ACCESS_PASSWORD = 4;
+
+            // Список ролей содержит некорректную (несуществующую) роль
+            INVALID_ROLE_LIST = 5;
+
+            // Пользователь является пердопределенным и не может быть изменен
+            ROLE_IS_PREDEFINED = 6;
         }
     }
 }
 
-message UpdateDbRequest {
+message PgUpdateDbRequest {
     // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 
@@ -471,11 +436,11 @@ message UpdateDbRequest {
     string description = 3;
 }
 
-message UpdateDbResponse {
+message PgUpdateDbResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: информация о базе данных
-        Db db = 1;
+        PgDb db = 1;
 
         // Результат запроса: ошибка изменения информации о базе данных
         Error error = 2;
@@ -498,9 +463,69 @@ message UpdateDbResponse {
     }
 }
 
-message Mysql5 {
+message PgGetRemoteAccessRequest {
+    // Идентификатор сервиса в формате uuid v4
+    string service_id = 1;
+}
+
+message PgGetRemoteAccessResponse {
+    PgRemoteAccessState state = 1;
+}
+
+message PgUpdateRemoteAccessRequest {
+    // Идентификатор сервиса в формате uuid v4
+    string service_id = 1;
+
+    // Адрес подсети в формате IP/Маска, например: 192.168.1.1/24
+    // Пустой список - внешний доступ запрещен
+    repeated string subnet_address = 2;
+}
+
+message PgUpdateRemoteAccessResponse {
+    // Результат запроса
+    oneof result {
+        // Результат запроса: текущее состояние доступа со внешних адресов
+        PgRemoteAccessState state = 1;
+
+        // Результат запроса: ошибка добавления адреса подсети для внешнего доступа
+        Error error = 2;
+    }
+
+    message Error {
+        // Описание ошибки
+        string message = 1;
+
+        // Код ошибки
+        Code code = 2;
+
+        enum Code {
+            // Зарезервированный код ошибки
+            _ = 0;
+
+            // Некорректный статус ресурса (отличный от running/stopped)
+            INVALID_STATE = 1;
+
+            // Доступ к сервису заблокирован
+            SERVICE_DISABLED = 2;
+
+            // Некорректный формат адреса подсети
+            INVALID_SUBNET_ADDRESS = 3;
+
+            // IP уже добавлен или входит в ранее добавленную подсеть
+            IP_IS_IN_EXISTED_SUBNET = 4;
+
+            // Подсеть уже входит полностью или частично в добавленные ранее
+            SUBNET_IS_IN_EXISTED_SUBNET = 5;
+
+            // Подсеть является приватной
+            SUBNET_IS_PRIVATE = 6;
+        }
+    }
+}
+
+message Postgresql15 {
     // Конфигурация базы данных
-    Mysql5Configuration configuration = 1;
+    Postgresql15Configuration configuration = 1;
 
     // Хост для подключения к базе данных
     string host = 2;
@@ -511,8 +536,8 @@ message Mysql5 {
     // Адреса для доступа к управляемому сервису
     structures.AddressInfo address_info = 4;
 
-    // Адрес PhpMyAdmin
-    string pma_url = 5;
+    // Адрес Adminer
+    string adminer_url = 5;
 
     // Размер использованного места на диске в байтах
     uint64 disk_used = 6;
@@ -523,13 +548,13 @@ message Mysql5 {
     // Включен ли режим "только для чтения"
     bool read_only = 8;
 
-    // PhpMyAdmin в процессе установки
-    bool pma_installing = 9;
+    // Adminer в процессе установки
+    bool adminer_installing = 9;
 }
 
-message Mysql8 {
+message Postgresql14 {
     // Конфигурация базы данных
-    Mysql8Configuration configuration = 1;
+    Postgresql15Configuration configuration = 1;
 
     // Хост для подключения к базе данных
     string host = 2;
@@ -540,8 +565,8 @@ message Mysql8 {
     // Адреса для доступа к управляемому сервису
     structures.AddressInfo address_info = 4;
 
-    // Адрес PhpMyAdmin
-    string pma_url = 5;
+    // Адрес Adminer
+    string adminer_url = 5;
 
     // Размер использованного места на диске в байтах
     uint64 disk_used = 6;
@@ -552,28 +577,31 @@ message Mysql8 {
     // Включен ли режим "только для чтения"
     bool read_only = 8;
 
-    // PhpMyAdmin в процессе установки
-    bool pma_installing = 9;
+    // Adminer в процессе установки
+    bool adminer_installing = 9;
 }
 
-message CreateParams {
+message PgCreateParams {
     // Имя базы данных
     string db_name = 1;
 
-    // Пароль для доступа к базе данных
-    string access_password = 2;
+    // Имя пользователя
+    string role_name = 2;
 
-    // Список параметров для конфигурации базы данных (my.cnf) (необязательное поле)
-    map<string, string> param = 3;
+    // Пароль для доступа к базе данных
+    string access_password = 3;
+
+    // Список параметров для конфигурации базы данных (необязательное поле)
+    map<string, string> param = 4;
 
     // Тип конфигурации базы данных (default/custom) (необязательное поле)
-    string preset_name = 4;
+    string preset_name = 5;
 
-    // Сохранить пароль для доступа из PhpMyAdmin
-    bool save_pma_password = 5;
+    // Сохранить пароль для доступа из Adminer
+    bool save_adminer_password = 6;
 }
 
-message CreateError {
+message PgCreateError {
     // Описание ошибки
     string message = 1;
 
@@ -599,24 +627,33 @@ message CreateError {
         // Некорректное имя базы данных
         INVALID_DB_NAME = 5;
 
+        // Некорректное имя пользователя
+        INVALID_ROLE_NAME = 6;
+
         // Некорректный пароль
-        INVALID_ACCESS_PASSWORD = 6;
+        INVALID_ACCESS_PASSWORD = 7;
 
         // Создание временно недоступно
-        TEMPORARILY_UNAVAILABLE = 7;
+        TEMPORARILY_UNAVAILABLE = 8;
 
         // Создание недоступно
-        SERVICE_DISABLED = 8;
+        SERVICE_DISABLED = 9;
 
         // Словарный пароль (пароль находится в черном списке)
-        BLACKLISTED_ACCESS_PASSWORD = 9;
+        BLACKLISTED_ACCESS_PASSWORD = 10;
 
         // Некорректные параметры конфигурации
-        INVALID_CONFIG_PARAMS = 10;
+        INVALID_CONFIG_PARAMS = 11;
+
+        // Имя базы данных зарезервировано системой
+        DB_NAME_IS_RESERVED = 12;
+
+        // Имя пользователя зарезервировано системой
+        ROLE_NAME_IS_RESERVED = 13;
     }
 }
 
-message Mysql5Configuration {
+message Postgresql15Configuration {
     // Количество ядер процессора
     uint32 cpu_count = 1;
 
@@ -626,20 +663,20 @@ message Mysql5Configuration {
     // Размер памяти в MB
     uint32 memory = 3;
 
-    // Версия MySQL
+    // Версия PostgreSQL
     string version = 4;
 
-    // Отображаемая версия MySQL
+    // Отображаемая версия PostgreSQL
     string display_version = 5;
 
     // Список доступных параметров для конфигурации базы данных
     repeated structures.ConfigParam config_param = 6;
 
     // Список доступных пресетов параметров. Пресет по-умолчанию имеет имя "default"
-    repeated Config config_preset = 7;
+    repeated PgConfig config_preset = 7;
 }
 
-message Mysql8Configuration {
+message Postgresql14Configuration {
     // Количество ядер процессора
     uint32 cpu_count = 1;
 
@@ -649,48 +686,60 @@ message Mysql8Configuration {
     // Размер памяти в MB
     uint32 memory = 3;
 
-    // Версия MySQL
+    // Версия PostgreSQL
     string version = 4;
 
-    // Отображаемая версия MySQL
+    // Отображаемая версия PostgreSQL
     string display_version = 5;
 
     // Список доступных параметров для конфигурации базы данных
     repeated structures.ConfigParam config_param = 6;
 
     // Список доступных пресетов параметров. Пресет по-умолчанию имеет имя "default"
-    repeated Config config_preset = 7;
+    repeated PgConfig config_preset = 7;
 }
 
-message Db {
+message PgDb {
     // Имя базы данных
     string name = 1;
 
     // Размер базы данных в байтах
     uint64 size = 2;
 
-    // Список доступов к базе данных
-    repeated Access access = 3;
-
-    // Был ли сохранен пароль для доступа из PhpMyAdmin
-    bool pma_password_saved = 4;
+    // Имя пользователя владельца базы данных
+    string owner = 3;
 
     // Описание базы данных
     string description = 5;
-
-    message Access {
-        // Хост для доступа к базе данных (ip/domain)
-        string host = 1;
-
-        // Пароль для доступа к базе данных
-        string password = 2;
-    }
 }
 
-message Config {
-    // Список параметров для конфигурации базы данных (my.cnf)
+message Role {
+    // Имя пользователя
+    string name = 1;
+
+    // Пароль пользователя
+    string password = 2;
+
+    // Был ли сохранен пароль для доступа из Adminer
+    bool adminer_password_saved = 3;
+
+    // Список ролей наследуемых пользователем
+    repeated string parent_role = 4;
+
+    // Является ли пользователь предопределенным
+    bool predefined = 5;
+}
+
+message PgConfig {
+    // Список параметров для конфигурации базы данных
     map<string, string> param = 1;
 
     // Тип конфигурации базы данных default/custom
-    string preset_name = 3;
+    string preset_name = 2;
+}
+
+message PgRemoteAccessState {
+    // Список Адресов подсети в формате IP/Маска, например: 192.168.1.1/24
+    // Пустой список - внешний доступ запрещен
+    repeated string subnet_address = 1;
 }
