@@ -78,7 +78,8 @@ service PostgresqlService {
 
     rpc updateRemoteAccess(PgUpdateRemoteAccessRequest) returns (PgUpdateRemoteAccessResponse) {
         option (google.api.http) = {
-            put: "/v1/cloud/postgresql/{service_id}/remote-access"
+            put: "/v1/cloud/postgresql/{service_id}/remote-access",
+            body: "*"
         };
     }
 }
