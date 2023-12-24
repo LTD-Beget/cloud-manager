@@ -264,9 +264,6 @@ message PgCreateRoleRequest {
     // Пароль
     string password = 3;
 
-    // Сохранить пароль для доступа из Adminer
-    bool save_adminer_password = 4;
-
     // Список ролей наследуемых пользователем
     repeated string parent_role = 5;
 }
@@ -308,7 +305,7 @@ message PgCreateRoleResponse {
             ROLE_ALREADY_EXISTS = 5;
 
             // Словарный пароль (находится в черном списке)
-            BLACKLISTED_ACCESS_PASSWORD = 6;
+            BLACKLISTED_PASSWORD = 6;
 
             // Список родительских ролей содержит недопустимую роль
             INVALID_PARENT_ROLE_LIST = 7;
@@ -376,9 +373,6 @@ message PgUpdateRoleRequest {
     // Пароль
     string password = 3;
 
-    // Сохранить пароль для доступа из Adminer
-    bool save_adminer_password = 4;
-
     // Список ролей наследуемых пользователем
     repeated string parent_role = 5;
 }
@@ -411,16 +405,13 @@ message PgUpdateRoleResponse {
             SERVICE_DISABLED = 2;
 
             // Некорректный пароль
-            INVALID_ACCESS_PASSWORD = 3;
+            INVALID_PASSWORD = 3;
 
             // Словарный пароль (находится в черном списке)
-            BLACKLISTED_ACCESS_PASSWORD = 4;
+            BLACKLISTED_PASSWORD = 4;
 
-            // Список ролей содержит некорректную (несуществующую) роль
-            INVALID_ROLE_LIST = 5;
-
-            // Пользователь является пердопределенным и не может быть изменен
-            ROLE_IS_PREDEFINED = 6;
+            // Список родительских ролей содержит недопустимую роль
+            INVALID_PARENT_ROLE_LIST = 5;
         }
     }
 }
@@ -596,9 +587,6 @@ message PgCreateParams {
 
     // Тип конфигурации базы данных (default/custom) (необязательное поле)
     string preset_name = 5;
-
-    // Сохранить пароль для доступа из Adminer
-    bool save_adminer_password = 6;
 }
 
 message PgCreateError {
@@ -719,9 +707,6 @@ message Role {
 
     // Пароль пользователя
     string password = 2;
-
-    // Был ли сохранен пароль для доступа из Adminer
-    bool adminer_password_saved = 3;
 
     // Список ролей наследуемых пользователем
     repeated string parent_role = 4;
