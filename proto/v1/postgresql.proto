@@ -264,9 +264,6 @@ message PgCreateRoleRequest {
     // Пароль
     string password = 3;
 
-    // Сохранить пароль для доступа из Adminer
-    bool save_adminer_password = 4;
-
     // Список ролей наследуемых пользователем
     repeated string parent_role = 5;
 }
@@ -298,7 +295,7 @@ message PgCreateRoleResponse {
             // Доступ к сервису заблокирован
             SERVICE_DISABLED = 2;
 
-            // Некорректное имя роли
+            // Некорректное имя роли (пользователя)
             INVALID_ROLE_NAME = 3;
 
             // Некорректный пароль
@@ -308,7 +305,7 @@ message PgCreateRoleResponse {
             ROLE_ALREADY_EXISTS = 5;
 
             // Словарный пароль (находится в черном списке)
-            BLACKLISTED_ACCESS_PASSWORD = 6;
+            BLACKLISTED_PASSWORD = 6;
 
             // Список родительских ролей содержит недопустимую роль
             INVALID_PARENT_ROLE_LIST = 7;
@@ -376,9 +373,6 @@ message PgUpdateRoleRequest {
     // Пароль
     string password = 3;
 
-    // Сохранить пароль для доступа из Adminer
-    bool save_adminer_password = 4;
-
     // Список ролей наследуемых пользователем
     repeated string parent_role = 5;
 }
@@ -411,16 +405,13 @@ message PgUpdateRoleResponse {
             SERVICE_DISABLED = 2;
 
             // Некорректный пароль
-            INVALID_ACCESS_PASSWORD = 3;
+            INVALID_PASSWORD = 3;
 
             // Словарный пароль (находится в черном списке)
-            BLACKLISTED_ACCESS_PASSWORD = 4;
+            BLACKLISTED_PASSWORD = 4;
 
-            // Список ролей содержит некорректную (несуществующую) роль
-            INVALID_ROLE_LIST = 5;
-
-            // Пользователь является пердопределенным и не может быть изменен
-            ROLE_IS_PREDEFINED = 6;
+            // Список родительских ролей содержит недопустимую роль
+            INVALID_PARENT_ROLE_LIST = 5;
         }
     }
 }
@@ -536,8 +527,8 @@ message Postgresql15 {
     // Адреса для доступа к управляемому сервису
     structures.AddressInfo address_info = 4;
 
-    // Адрес Adminer
-    string adminer_url = 5;
+    // Адрес веб-интерфейса для доступа к БД
+    string webui_url = 5;
 
     // Размер использованного места на диске в байтах
     uint64 disk_used = 6;
@@ -548,8 +539,8 @@ message Postgresql15 {
     // Включен ли режим "только для чтения"
     bool read_only = 8;
 
-    // Adminer в процессе установки
-    bool adminer_installing = 9;
+    // Веб-интерфейс для доступа к БД в процессе установки
+    bool webui_installing = 9;
 }
 
 message Postgresql14 {
@@ -565,8 +556,8 @@ message Postgresql14 {
     // Адреса для доступа к управляемому сервису
     structures.AddressInfo address_info = 4;
 
-    // Адрес Adminer
-    string adminer_url = 5;
+    // Адрес веб-интерфейса для доступа к БД
+    string webui_url = 5;
 
     // Размер использованного места на диске в байтах
     uint64 disk_used = 6;
@@ -577,8 +568,8 @@ message Postgresql14 {
     // Включен ли режим "только для чтения"
     bool read_only = 8;
 
-    // Adminer в процессе установки
-    bool adminer_installing = 9;
+    // Веб-интерфейс для доступа к БД в процессе установки
+    bool webui_installing = 9;
 }
 
 message PgCreateParams {
@@ -589,16 +580,13 @@ message PgCreateParams {
     string role_name = 2;
 
     // Пароль для доступа к базе данных
-    string access_password = 3;
+    string password = 3;
 
     // Список параметров для конфигурации базы данных (необязательное поле)
     map<string, string> param = 4;
 
     // Тип конфигурации базы данных (default/custom) (необязательное поле)
     string preset_name = 5;
-
-    // Сохранить пароль для доступа из Adminer
-    bool save_adminer_password = 6;
 }
 
 message PgCreateError {
@@ -627,11 +615,11 @@ message PgCreateError {
         // Некорректное имя базы данных
         INVALID_DB_NAME = 5;
 
-        // Некорректное имя пользователя
+        // Некорректное имя пользователя (роли)
         INVALID_ROLE_NAME = 6;
 
         // Некорректный пароль
-        INVALID_ACCESS_PASSWORD = 7;
+        INVALID_PASSWORD = 7;
 
         // Создание временно недоступно
         TEMPORARILY_UNAVAILABLE = 8;
@@ -640,7 +628,7 @@ message PgCreateError {
         SERVICE_DISABLED = 9;
 
         // Словарный пароль (пароль находится в черном списке)
-        BLACKLISTED_ACCESS_PASSWORD = 10;
+        BLACKLISTED_PASSWORD = 10;
 
         // Некорректные параметры конфигурации
         INVALID_CONFIG_PARAMS = 11;
@@ -719,9 +707,6 @@ message Role {
 
     // Пароль пользователя
     string password = 2;
-
-    // Был ли сохранен пароль для доступа из Adminer
-    bool adminer_password_saved = 3;
 
     // Список ролей наследуемых пользователем
     repeated string parent_role = 4;
