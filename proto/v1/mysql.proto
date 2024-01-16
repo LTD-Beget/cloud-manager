@@ -143,8 +143,8 @@ message GetConfigRequest {
 }
 
 message GetConfigResponse {
-    // Параметры базы данных
-    Config config = 1;
+    // Информация о текущей конфигурации базы данных
+    ConfigInfo config = 1;
 }
 
 message SetConfigRequest {
@@ -153,16 +153,13 @@ message SetConfigRequest {
 
     // Список параметров для конфигурации базы данных (my.cnf)
     map<string, string> param = 2;
-
-    // Тип конфигурации базы данных default/custom (необязательное поле)
-    string preset_name = 3;
 }
 
 message SetConfigResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: информация о текущей конфигурации базы данных
-        Config config = 1;
+        ConfigInfo config = 1;
 
         // Результат запроса: ошибка при изменении конфигурации базы данных
         Error error = 2;
@@ -566,11 +563,8 @@ message CreateParams {
     // Список параметров для конфигурации базы данных (my.cnf) (необязательное поле)
     map<string, string> param = 3;
 
-    // Тип конфигурации базы данных (default/custom) (необязательное поле)
-    string preset_name = 4;
-
     // Сохранить пароль для доступа из PhpMyAdmin
-    bool save_pma_password = 5;
+    bool save_pma_password = 4;
 }
 
 message CreateError {
@@ -635,8 +629,8 @@ message Mysql5Configuration {
     // Список доступных параметров для конфигурации базы данных
     repeated structures.ConfigParam config_param = 6;
 
-    // Список доступных пресетов параметров. Пресет по-умолчанию имеет имя "default"
-    repeated Config config_preset = 7;
+    // Список дефолтных параметров для конфигурации базы данных (my.cnf)
+    map<string, string> param_default = 7;
 }
 
 message Mysql8Configuration {
@@ -658,8 +652,8 @@ message Mysql8Configuration {
     // Список доступных параметров для конфигурации базы данных
     repeated structures.ConfigParam config_param = 6;
 
-    // Список доступных пресетов параметров. Пресет по-умолчанию имеет имя "default"
-    repeated Config config_preset = 7;
+    // Список дефолтных параметров для конфигурации базы данных (my.cnf)
+    map<string, string> param_default = 7;
 }
 
 message Db {
@@ -687,10 +681,13 @@ message Db {
     }
 }
 
-message Config {
-    // Список параметров для конфигурации базы данных (my.cnf)
-    map<string, string> param = 1;
+message ConfigInfo {
+    // Список дефолтных параметров для конфигурации базы данных
+    map<string, string> params_default = 1;
 
-    // Тип конфигурации базы данных default/custom
-    string preset_name = 3;
+    // Список доступных параметров для конфигурации базы данных
+    repeated structures.ConfigParam config_param = 2;
+
+    // Список текущих параметров для конфигурации базы данных
+    map<string, string> params = 3;
 }

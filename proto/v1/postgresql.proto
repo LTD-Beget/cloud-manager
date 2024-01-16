@@ -90,8 +90,8 @@ message PgGetConfigRequest {
 }
 
 message PgGetConfigResponse {
-    // Параметры базы данных
-    PgConfig config = 1;
+    // Информация о текущей конфигурации базы данных
+    PgConfigInfo config = 1;
 }
 
 message PgSetConfigRequest {
@@ -100,16 +100,13 @@ message PgSetConfigRequest {
 
     // Список параметров для конфигурации базы данных
     map<string, string> param = 2;
-
-    // Тип конфигурации базы данных default/custom (необязательное поле)
-    string preset_name = 3;
 }
 
 message PgSetConfigResponse {
     // Результат запроса
     oneof result {
         // Результат запроса: информация о текущей конфигурации базы данных
-        PgConfig config = 1;
+        PgConfigInfo config = 1;
 
         // Результат запроса: ошибка при изменении конфигурации базы данных
         Error error = 2;
@@ -584,9 +581,6 @@ message PgCreateParams {
 
     // Список параметров для конфигурации базы данных (необязательное поле)
     map<string, string> param = 4;
-
-    // Тип конфигурации базы данных (default/custom) (необязательное поле)
-    string preset_name = 5;
 }
 
 message PgCreateError {
@@ -660,8 +654,8 @@ message Postgresql15Configuration {
     // Список доступных параметров для конфигурации базы данных
     repeated structures.ConfigParam config_param = 6;
 
-    // Список доступных пресетов параметров. Пресет по-умолчанию имеет имя "default"
-    repeated PgConfig config_preset = 7;
+    // Список дефолтных параметров для конфигурации базы данных
+    map<string, string> param_default = 7;
 }
 
 message Postgresql14Configuration {
@@ -683,8 +677,8 @@ message Postgresql14Configuration {
     // Список доступных параметров для конфигурации базы данных
     repeated structures.ConfigParam config_param = 6;
 
-    // Список доступных пресетов параметров. Пресет по-умолчанию имеет имя "default"
-    repeated PgConfig config_preset = 7;
+    // Список дефолтных параметров для конфигурации базы данных
+    map<string, string> param_default = 7;
 }
 
 message PgDb {
@@ -719,12 +713,23 @@ message PgConfig {
     // Список параметров для конфигурации базы данных
     map<string, string> param = 1;
 
-    // Тип конфигурации базы данных default/custom
-    string preset_name = 2;
+    // Список дефолтных параметров для конфигурации базы данных
+    map<string, string> param_default = 2;
 }
 
 message PgRemoteAccessState {
     // Список Адресов подсети в формате IP/Маска, например: 192.168.1.1/24
     // Пустой список - внешний доступ запрещен
     repeated string subnet_address = 1;
+}
+
+message PgConfigInfo {
+    // Список дефолтных параметров для конфигурации базы данных
+    map<string, string> params_default = 1;
+
+    // Список доступных параметров для конфигурации базы данных
+    repeated structures.ConfigParam config_param = 2;
+
+    // Список текущих параметров для конфигурации базы данных
+    map<string, string> params = 3;
 }
