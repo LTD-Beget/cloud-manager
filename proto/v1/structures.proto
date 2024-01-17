@@ -47,7 +47,7 @@ enum StatisticPeriod {
     MONTH = 4;
 }
 
-message ConfigParam {
+message ParamConfig {
     string name = 1;
     string documentation_link = 2;
 

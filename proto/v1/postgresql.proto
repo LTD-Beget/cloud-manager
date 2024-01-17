@@ -652,7 +652,7 @@ message Postgresql15Configuration {
     string display_version = 5;
 
     // Список доступных параметров для конфигурации базы данных
-    repeated structures.ConfigParam config_param = 6;
+    repeated structures.ParamConfig param_config = 6;
 
     // Список параметров по умолчанию для конфигурации базы данных
     map<string, string> param_default = 7;
@@ -675,7 +675,7 @@ message Postgresql14Configuration {
     string display_version = 5;
 
     // Список доступных параметров для конфигурации базы данных
-    repeated structures.ConfigParam config_param = 6;
+    repeated structures.ParamConfig param_config = 6;
 
     // Список параметров по умолчанию  для конфигурации базы данных
     map<string, string> param_default = 7;
@@ -728,8 +728,8 @@ message PgConfigInfo {
     map<string, string> param_default = 1;
 
     // Список доступных параметров для конфигурации базы данных
-    repeated structures.ConfigParam config_param = 2;
+    repeated structures.ParamConfig param_config = 2;
 
     // Список текущих параметров для конфигурации базы данных
-    map<string, string> params = 3;
+    map<string, string> param = 3;
 }
