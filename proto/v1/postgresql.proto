@@ -654,7 +654,7 @@ message Postgresql15Configuration {
     // Список доступных параметров для конфигурации базы данных
     repeated structures.ConfigParam config_param = 6;
 
-    // Список дефолтных параметров для конфигурации базы данных
+    // Список параметров по умолчанию для конфигурации базы данных
     map<string, string> param_default = 7;
 }
 
@@ -677,7 +677,7 @@ message Postgresql14Configuration {
     // Список доступных параметров для конфигурации базы данных
     repeated structures.ConfigParam config_param = 6;
 
-    // Список дефолтных параметров для конфигурации базы данных
+    // Список параметров по умолчанию  для конфигурации базы данных
     map<string, string> param_default = 7;
 }
 
@@ -713,7 +713,7 @@ message PgConfig {
     // Список параметров для конфигурации базы данных
     map<string, string> param = 1;
 
-    // Список дефолтных параметров для конфигурации базы данных
+    // Список параметров по умолчанию  для конфигурации базы данных
     map<string, string> param_default = 2;
 }
 
@@ -724,8 +724,8 @@ message PgRemoteAccessState {
 }
 
 message PgConfigInfo {
-    // Список дефолтных параметров для конфигурации базы данных
-    map<string, string> params_default = 1;
+    // Список параметров по умолчанию  для конфигурации базы данных
+    map<string, string> param_default = 1;
 
     // Список доступных параметров для конфигурации базы данных
     repeated structures.ConfigParam config_param = 2;

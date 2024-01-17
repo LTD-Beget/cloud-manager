@@ -629,7 +629,7 @@ message Mysql5Configuration {
     // Список доступных параметров для конфигурации базы данных
     repeated structures.ConfigParam config_param = 6;
 
-    // Список дефолтных параметров для конфигурации базы данных (my.cnf)
+    // Список параметров по умолчанию  для конфигурации базы данных (my.cnf)
     map<string, string> param_default = 7;
 }
 
@@ -652,7 +652,7 @@ message Mysql8Configuration {
     // Список доступных параметров для конфигурации базы данных
     repeated structures.ConfigParam config_param = 6;
 
-    // Список дефолтных параметров для конфигурации базы данных (my.cnf)
+    // Список параметров по умолчанию  для конфигурации базы данных (my.cnf)
     map<string, string> param_default = 7;
 }
 
@@ -682,8 +682,8 @@ message Db {
 }
 
 message ConfigInfo {
-    // Список дефолтных параметров для конфигурации базы данных
-    map<string, string> params_default = 1;
+    // Список параметров по умолчанию  для конфигурации базы данных
+    map<string, string> param_default = 1;
 
     // Список доступных параметров для конфигурации базы данных
     repeated structures.ConfigParam config_param = 2;
