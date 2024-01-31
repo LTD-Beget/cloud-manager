@@ -542,7 +542,7 @@ message Postgresql15 {
 
 message Postgresql14 {
     // Конфигурация базы данных
-    Postgresql15Configuration configuration = 1;
+    Postgresql14Configuration configuration = 1;
 
     // Хост для подключения к базе данных
     string host = 2;
