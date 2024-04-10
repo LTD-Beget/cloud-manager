@@ -1,0 +1,96 @@
+syntax = 'proto3';
+
+package beget.cloud.v1.backup;
+
+import "google/api/annotations.proto";
+import "cloud/proto/v1/structures.proto";
+
+service BackupService {
+    rpc getAvailableCopies(GetAvailableCopiesRequest) returns (GetAvailableCopiesResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/backup"
+        };
+    }
+
+    rpc getOrders(GetOrdersRequest) returns (GetOrdersResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/backup/orders"
+        };
+    }
+
+    rpc restore(RestoreRequest) returns (RestoreResponse) {
+        option (google.api.http) = {
+            post: "/v1/cloud/backup/{service_id}/restore"
+            body: "*"
+        };
+    }
+}
+
+message GetAvailableCopiesRequest {
+}
+
+message GetAvailableCopiesResponse {
+    // Список доступных бекапов
+    repeated structures.CopyInfo copy = 1;
+}
+
+message GetOrdersRequest {
+    // Количество записей на страницу
+    uint32 limit = 1;
+
+    // Смещение относительно нулевой (последней) записи
+    uint32 offset = 2;
+}
+
+message GetOrdersResponse {
+    // История заданий по восстановлению
+    repeated structures.OrderInfo order = 1;
+}
+
+message RestoreRequest {
+    // Идентификатор бекапа
+    uint64 backup_id = 1;
+
+    // Идентификатор сервиса в формате uuid v4
+    string service_id = 2;
+}
+
+message RestoreResponse {
+    oneof response {
+        // Информация о восстановлении
+        structures.OrderInfo order = 1;
+
+        // Произошла ошибка при создании заявки на восстановление из бекапа
+        Error error = 2;
+    }
+
+    message Error {
+        // Описание ошибки
+        string message = 1;
+
+        // Код ошибки
+        Code code = 2;
+
+        enum Code {
+            _ = 0;
+
+            // Внутренняя ошибка
+            INTERNAL_ERROR = 1;
+
+            // Бекап в процессе создания
+            BACKUP_NOT_DONE = 2;
+
+            // Конфигурация VPS не подходит для данного бекапа
+            CONFIGURATION_NOT_ENOUGH = 3;
+
+            // В данном статусе VPS невозможно восстановить бекап (VPS не в статусе running/stopped)
+            UNSUITABLE_VPS_STATUS = 4;
+
+            // Регион бекапа не соответствует региону целевого сервера
+            REGION_MISMATCH = 5;
+
+            // Тип сервиса не соответствует типу бекапа
+            INCORRECT_SERVICE_TYPE = 6;
+        }
+    }
+}
