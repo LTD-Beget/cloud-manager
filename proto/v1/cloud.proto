@@ -4,6 +4,7 @@ package beget.cloud.v1.cloud;
 import "google/api/annotations.proto";
 import "cloud/proto/v1/mysql.proto";
 import "cloud/proto/v1/postgresql.proto";
+import "cloud/proto/v1/s3.proto";
 // do not use structures.proto here for avoid recursive import
 
 // Управление сервисами
@@ -125,6 +126,8 @@ message CreateRequest {
         mysql.CreateParams mysql_params = 4;
         // Дополнительные параметры создаваемого сервиса: управляемая БД PostgreSQL
         postgresql.PgCreateParams postgresql_params = 7;
+        // Дополнительные параметры создаваемого сервиса: S3 хранилище
+        s3.S3CreateParams s3_params = 8;
     }
 
     // Зарезервированное поле, должно быть пустым
@@ -145,6 +148,9 @@ message CreateResponse {
 
         // Результат запроса: ошибка при создании PostgreSQL
         postgresql.PgCreateError postgresql_error = 3;
+
+        // Результат запроса: ошибка при создании S3
+        s3.S3CreateError s3_error = 4;
     }
 }
 
@@ -303,6 +309,9 @@ message Service {
 
         // Информация о конкретном сервисе: управляемая БД PostgreSQL 14
         postgresql.Postgresql14 postgresql14 = 18;
+
+        // Информация о конкретном сервисе: хранилище S3
+        s3.S3 s3 = 19;
     }
 
     // Заблокирован ли сервис
@@ -322,6 +331,17 @@ message Service {
 
     // Регион, в котором расположен сервис
     string region = 16;
+
+    // Тип сервиса
+    Type type = 20;
+
+    enum Type {
+        MYSQL5 = 0;
+        MYSQL8 = 1;
+        POSTGRESQL14 = 2;
+        POSTGRESQL15 = 3;
+        S_3 = 4;
+    }
 
     enum Status {
         // Создается

@@ -1,0 +1,62 @@
+syntax = 'proto3';
+
+package beget.cloud.v1.s3;
+//import "google/api/annotations.proto";
+
+// Управление S3
+//
+// Предоставляет набор методов для работы с S3 хранилищем
+service S3Service {
+
+}
+
+message S3CreateParams {
+    // Признак публичности репозитория
+    bool public = 1;
+}
+
+message S3CreateError {
+    // Описание ошибки
+    string message = 1;
+
+    // Код ошибки
+    Code code = 2;
+
+    enum Code {
+        // Зарезервированный код ошибки
+        _ = 0;
+
+        // Недостаточно средств для создания сервиса
+        INSUFFICIENT_FUNDS = 1;
+
+        // Неизвестная конфигурация
+        CONFIGURATION_NOT_FOUND = 2;
+
+        // Некорректное название сервиса
+        INVALID_DISPLAY_NAME = 4;
+
+        // Создание временно недоступно
+        TEMPORARILY_UNAVAILABLE = 5;
+
+        // Создание недоступно
+        SERVICE_DISABLED = 6;
+    }
+}
+
+message S3 {
+    // Признак публичности репозитория
+    bool public = 1;
+    string access_key = 2;
+    string secret_key = 3;
+    string fqdn = 4;
+    repeated Cors cors = 5;
+    uint64 quota_used_size = 6;
+}
+
+message Cors {
+    // Тип запроса(GET/POST/PUT/DELETE/HEAD)
+    repeated string http_method = 1;
+    repeated string http_header = 2;
+    uint64 cache_ttl = 3;
+    string fqdn = 4;
+}
