@@ -1,13 +1,104 @@
 syntax = 'proto3';
 
 package beget.cloud.v1.s3;
-//import "google/api/annotations.proto";
+import "google/api/annotations.proto";
 
 // Управление S3
 //
 // Предоставляет набор методов для работы с S3 хранилищем
 service S3Service {
+    rpc getQuota(GetQuotaRequest) returns (GetQuotaResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/s3/quota",
+        };
+    }
 
+    rpc changeAccessKey(ChangeAccessKeyRequest) returns (ChangeAccessKeyResponse) {
+        option (google.api.http) = {
+            patch: "/v1/cloud/s3/{service_id}",
+            body: "*"
+        };
+    }
+
+    rpc changeCors(ChangeCorsRequest) returns (ChangeCorsResponse) {
+        option (google.api.http) = {
+            patch: "/v1/cloud/s3/{service_id}",
+            body: "*"
+        };
+    }
+}
+
+message GetQuotaRequest {
+}
+
+message GetQuotaResponse {
+    uint64 used_size = 1;
+    uint64 available_size = 2;
+}
+
+message ChangeAccessKeyRequest {
+    string service_id = 1;
+}
+
+message ChangeAccessKeyResponse {
+    oneof result {
+        // Результат запроса: информация о сервисе
+        S3 s3 = 1;
+
+        // Результат запроса: ошибка при обновлении информации о сервисе
+        Error error = 2;
+    }
+
+    message Error {
+        // Описание ошибки
+        string message = 1;
+
+        // Код ошибки
+        Code code = 2;
+
+        enum Code {
+            // Зарезервированный код ошибки
+            _ = 0;
+
+            SERVICE_NOT_FOUND = 2;
+
+            SERVICE_DISABLED = 6;
+        }
+    }
+}
+
+message ChangeCorsRequest {
+    string service_id = 1;
+    Cors cors = 2;
+}
+
+message ChangeCorsResponse {
+    oneof result {
+        // Результат запроса: информация о сервисе
+        S3 s3 = 1;
+
+        // Результат запроса: ошибка при обновлении информации о сервисе
+        Error error = 2;
+    }
+
+    message Error {
+        // Описание ошибки
+        string message = 1;
+
+        // Код ошибки
+        Code code = 2;
+
+        enum Code {
+            // Зарезервированный код ошибки
+            _ = 0;
+
+            SERVICE_NOT_FOUND = 2;
+
+            SERVICE_DISABLED = 3;
+
+            CORS_NOT_FOUND = 4;
+        }
+    }
 }
 
 message S3CreateParams {
@@ -54,6 +145,7 @@ message S3 {
 }
 
 message Cors {
+    uint64 id = 5;
     // Тип запроса(GET/POST/PUT/DELETE/HEAD)
     repeated string http_method = 1;
     repeated string http_header = 2;
