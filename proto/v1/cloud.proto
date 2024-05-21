@@ -374,6 +374,8 @@ message ServiceConfiguration {
     // Регион, в котором доступна конфигурация
     string region = 6;
 
+    Type type =  9;
+
     // Параметры конфигурации сервиса
     oneof configuration {
         //Параметры конфигурации сервиса: управляемая БД MySQL 5
@@ -387,5 +389,13 @@ message ServiceConfiguration {
 
         // Параметры конфигурации сервиса: управляемая БД PostgreSQL 14
         postgresql.Postgresql14Configuration postgresql14 = 8;
+    }
+
+    enum Type {
+        MYSQL5 = 0;
+        MYSQL8 = 1;
+        POSTGRESQL14 = 2;
+        POSTGRESQL15 = 3;
+        S_3 = 4;
     }
 }
