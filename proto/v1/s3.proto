@@ -69,7 +69,7 @@ message ChangeAccessKeyResponse {
 
 message ChangeCorsRequest {
     string service_id = 1;
-    Cors cors = 2;
+    repeated Cors cors = 2;
 }
 
 message ChangeCorsResponse {
@@ -145,7 +145,6 @@ message S3 {
 }
 
 message Cors {
-    uint64 id = 5;
     // Тип запроса(GET/POST/PUT/DELETE/HEAD)
     repeated string http_method = 1;
     repeated string http_header = 2;
