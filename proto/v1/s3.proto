@@ -15,14 +15,14 @@ service S3Service {
 
     rpc changeAccessKey(ChangeAccessKeyRequest) returns (ChangeAccessKeyResponse) {
         option (google.api.http) = {
-            patch: "/v1/cloud/s3/{service_id}",
+            patch: "/v1/cloud/s3/{service_id}/access-key",
             body: "*"
         };
     }
 
     rpc changeCors(ChangeCorsRequest) returns (ChangeCorsResponse) {
         option (google.api.http) = {
-            patch: "/v1/cloud/s3/{service_id}",
+            patch: "/v1/cloud/s3/{service_id}/cors",
             body: "*"
         };
     }
