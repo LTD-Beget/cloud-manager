@@ -26,6 +26,13 @@ service S3Service {
             body: "*"
         };
     }
+
+    rpc changeDomain(ChangeDomainRequest) returns (ChangeDomainResponse) {
+        option (google.api.http) = {
+            patch: "/v1/cloud/s3/{service_id}/domain",
+            body: "*"
+        };
+    }
 }
 
 message GetQuotaRequest {
@@ -97,6 +104,38 @@ message ChangeCorsResponse {
             SERVICE_DISABLED = 3;
 
             CORS_NOT_FOUND = 4;
+        }
+    }
+}
+
+message ChangeDomainRequest {
+    string service_id = 1;
+    string fqdn = 2;
+}
+
+message ChangeDomainResponse {
+    oneof result {
+        // Результат запроса: информация о сервисе
+        S3 s3 = 1;
+
+        // Результат запроса: ошибка при обновлении информации о сервисе
+        Error error = 2;
+    }
+
+    message Error {
+        // Описание ошибки
+        string message = 1;
+
+        // Код ошибки
+        Code code = 2;
+
+        enum Code {
+            // Зарезервированный код ошибки
+            _ = 0;
+
+            SERVICE_NOT_FOUND = 2;
+
+            SERVICE_DISABLED = 3;
         }
     }
 }
