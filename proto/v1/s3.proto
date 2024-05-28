@@ -184,9 +184,10 @@ message S3 {
 }
 
 message Cors {
+    uint32 id = 1;
     // Тип запроса(GET/POST/PUT/DELETE/HEAD)
-    repeated string http_method = 1;
-    repeated string http_header = 2;
-    uint64 cache_ttl = 3;
-    string fqdn = 4;
+    repeated string http_method = 2;
+    repeated string http_header = 3;
+    uint64 cache_ttl = 4;
+    string fqdn = 5;
 }
