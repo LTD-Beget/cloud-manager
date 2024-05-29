@@ -33,6 +33,13 @@ service S3Service {
             body: "*"
         };
     }
+
+    rpc changePublic(ChangePublicRequest) returns (ChangePublicResponse) {
+        option (google.api.http) = {
+            patch: "/v1/cloud/s3/{service_id}/public",
+            body: "*"
+        };
+    }
 }
 
 message GetQuotaRequest {
@@ -114,6 +121,38 @@ message ChangeDomainRequest {
 }
 
 message ChangeDomainResponse {
+    oneof result {
+        // Результат запроса: информация о сервисе
+        S3 s3 = 1;
+
+        // Результат запроса: ошибка при обновлении информации о сервисе
+        Error error = 2;
+    }
+
+    message Error {
+        // Описание ошибки
+        string message = 1;
+
+        // Код ошибки
+        Code code = 2;
+
+        enum Code {
+            // Зарезервированный код ошибки
+            _ = 0;
+
+            SERVICE_NOT_FOUND = 2;
+
+            SERVICE_DISABLED = 3;
+        }
+    }
+}
+
+message ChangePublicRequest {
+    string service_id = 1;
+    bool public = 2;
+}
+
+message ChangePublicResponse {
     oneof result {
         // Результат запроса: информация о сервисе
         S3 s3 = 1;
