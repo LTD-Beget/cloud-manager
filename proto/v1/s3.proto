@@ -40,6 +40,12 @@ service S3Service {
             body: "*"
         };
     }
+
+    rpc getPrice(GetPriceRequest) returns (GetPriceResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/s3/price",
+        };
+    }
 }
 
 message GetQuotaRequest {
@@ -177,6 +183,14 @@ message ChangePublicResponse {
             SERVICE_DISABLED = 3;
         }
     }
+}
+
+message GetPriceRequest {
+}
+
+message GetPriceResponse {
+    double rate_day = 1;
+    double rate_day_overload = 2;
 }
 
 message S3CreateParams {
