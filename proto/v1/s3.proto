@@ -149,6 +149,10 @@ message ChangeDomainResponse {
             SERVICE_NOT_FOUND = 2;
 
             SERVICE_DISABLED = 3;
+
+            DOMAIN_NOT_REGISTERED = 4;
+
+            DOMAIN_INCORRECT_NS = 5;
         }
     }
 }
