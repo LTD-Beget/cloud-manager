@@ -227,6 +227,9 @@ message S3CreateError {
 
         // Создание недоступно
         SERVICE_DISABLED = 6;
+
+        // Превышен лимит квоты
+        QUOTA_LIMIT_EXCEEDED = 7;
     }
 }
 
