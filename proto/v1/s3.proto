@@ -46,6 +46,12 @@ service S3Service {
             get: "/v1/cloud/s3/price",
         };
     }
+
+    rpc getPrefix(GetPrefixRequest) returns (GetPrefixResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/s3/prefix",
+        };
+    }
 }
 
 message GetQuotaRequest {
@@ -195,6 +201,13 @@ message GetPriceRequest {
 message GetPriceResponse {
     double rate_day = 1;
     double rate_day_overload = 2;
+}
+
+message GetPrefixRequest {
+}
+
+message GetPrefixResponse {
+    string prefix = 1;
 }
 
 message S3CreateParams {
