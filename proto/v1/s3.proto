@@ -213,6 +213,8 @@ message GetPrefixResponse {
 message S3CreateParams {
     // Признак публичности репозитория
     bool public = 1;
+
+    string bucket_name = 2;
 }
 
 message S3CreateError {
@@ -243,6 +245,10 @@ message S3CreateError {
 
         // Превышен лимит квоты
         QUOTA_LIMIT_EXCEEDED = 7;
+
+        BUCKET_NAME_ALREADY_EXISTS = 8;
+
+        INVALID_BUCKET_NAME = 9;
     }
 }
 
