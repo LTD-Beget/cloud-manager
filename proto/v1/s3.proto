@@ -58,8 +58,8 @@ message GetQuotaRequest {
 }
 
 message GetQuotaResponse {
-    uint64 used_size = 1;
-    uint64 available_size = 2;
+    uint32 used_size = 1;
+    uint32 available_size = 2;
 }
 
 message ChangeAccessKeyRequest {
