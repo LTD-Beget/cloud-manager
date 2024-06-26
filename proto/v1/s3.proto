@@ -159,6 +159,8 @@ message ChangeDomainResponse {
             DOMAIN_NOT_REGISTERED = 4;
 
             DOMAIN_INCORRECT_NS = 5;
+
+            NOT_SUBDOMAIN = 6;
         }
     }
 }
