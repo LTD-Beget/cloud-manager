@@ -261,7 +261,7 @@ message S3 {
     string secret_key = 3;
     string fqdn = 4;
     repeated Cors cors = 5;
-    uint64 quota_used_size = 6;
+    uint32 quota_used_size = 6;
 }
 
 message Cors {
