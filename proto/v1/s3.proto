@@ -123,6 +123,8 @@ message ChangeCorsResponse {
             SERVICE_DISABLED = 3;
 
             CORS_NOT_FOUND = 4;
+
+            INVALID_DOMAIN = 5;
         }
     }
 }
