@@ -1,0 +1,276 @@
+syntax = 'proto3';
+
+package beget.cloud.v1.s3;
+import "google/api/annotations.proto";
+
+// Управление S3
+//
+// Предоставляет набор методов для работы с S3 хранилищем
+service S3Service {
+    rpc getQuota(GetQuotaRequest) returns (GetQuotaResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/s3/quota",
+        };
+    }
+
+    rpc changeAccessKey(ChangeAccessKeyRequest) returns (ChangeAccessKeyResponse) {
+        option (google.api.http) = {
+            patch: "/v1/cloud/s3/{service_id}/access-key",
+            body: "*"
+        };
+    }
+
+    rpc changeCors(ChangeCorsRequest) returns (ChangeCorsResponse) {
+        option (google.api.http) = {
+            patch: "/v1/cloud/s3/{service_id}/cors",
+            body: "*"
+        };
+    }
+
+    rpc changeDomain(ChangeDomainRequest) returns (ChangeDomainResponse) {
+        option (google.api.http) = {
+            patch: "/v1/cloud/s3/{service_id}/domain",
+            body: "*"
+        };
+    }
+
+    rpc changePublic(ChangePublicRequest) returns (ChangePublicResponse) {
+        option (google.api.http) = {
+            patch: "/v1/cloud/s3/{service_id}/public",
+            body: "*"
+        };
+    }
+
+    rpc getPrice(GetPriceRequest) returns (GetPriceResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/s3/price",
+        };
+    }
+
+    rpc getPrefix(GetPrefixRequest) returns (GetPrefixResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/s3/prefix",
+        };
+    }
+}
+
+message GetQuotaRequest {
+}
+
+message GetQuotaResponse {
+    uint32 used_size = 1;
+    uint32 available_size = 2;
+}
+
+message ChangeAccessKeyRequest {
+    string service_id = 1;
+}
+
+message ChangeAccessKeyResponse {
+    oneof result {
+        // Результат запроса: информация о сервисе
+        S3 s3 = 1;
+
+        // Результат запроса: ошибка при обновлении информации о сервисе
+        Error error = 2;
+    }
+
+    message Error {
+        // Описание ошибки
+        string message = 1;
+
+        // Код ошибки
+        Code code = 2;
+
+        enum Code {
+            // Зарезервированный код ошибки
+            _ = 0;
+
+            SERVICE_NOT_FOUND = 2;
+
+            SERVICE_DISABLED = 6;
+        }
+    }
+}
+
+message ChangeCorsRequest {
+    string service_id = 1;
+    repeated Cors cors = 2;
+}
+
+message ChangeCorsResponse {
+    oneof result {
+        // Результат запроса: информация о сервисе
+        S3 s3 = 1;
+
+        // Результат запроса: ошибка при обновлении информации о сервисе
+        Error error = 2;
+    }
+
+    message Error {
+        // Описание ошибки
+        string message = 1;
+
+        // Код ошибки
+        Code code = 2;
+
+        enum Code {
+            // Зарезервированный код ошибки
+            _ = 0;
+
+            SERVICE_NOT_FOUND = 2;
+
+            SERVICE_DISABLED = 3;
+
+            CORS_NOT_FOUND = 4;
+
+            INVALID_DOMAIN = 5;
+        }
+    }
+}
+
+message ChangeDomainRequest {
+    string service_id = 1;
+    string fqdn = 2;
+}
+
+message ChangeDomainResponse {
+    oneof result {
+        // Результат запроса: информация о сервисе
+        S3 s3 = 1;
+
+        // Результат запроса: ошибка при обновлении информации о сервисе
+        Error error = 2;
+    }
+
+    message Error {
+        // Описание ошибки
+        string message = 1;
+
+        // Код ошибки
+        Code code = 2;
+
+        enum Code {
+            // Зарезервированный код ошибки
+            _ = 0;
+
+            SERVICE_NOT_FOUND = 2;
+
+            SERVICE_DISABLED = 3;
+
+            DOMAIN_NOT_REGISTERED = 4;
+
+            DOMAIN_INCORRECT_NS = 5;
+
+            NOT_SUBDOMAIN = 6;
+        }
+    }
+}
+
+message ChangePublicRequest {
+    string service_id = 1;
+    bool public = 2;
+}
+
+message ChangePublicResponse {
+    oneof result {
+        // Результат запроса: информация о сервисе
+        S3 s3 = 1;
+
+        // Результат запроса: ошибка при обновлении информации о сервисе
+        Error error = 2;
+    }
+
+    message Error {
+        // Описание ошибки
+        string message = 1;
+
+        // Код ошибки
+        Code code = 2;
+
+        enum Code {
+            // Зарезервированный код ошибки
+            _ = 0;
+
+            SERVICE_NOT_FOUND = 2;
+
+            SERVICE_DISABLED = 3;
+        }
+    }
+}
+
+message GetPriceRequest {
+}
+
+message GetPriceResponse {
+    double rate_day = 1;
+    double rate_day_overload = 2;
+}
+
+message GetPrefixRequest {
+}
+
+message GetPrefixResponse {
+    string prefix = 1;
+}
+
+message S3CreateParams {
+    // Признак публичности репозитория
+    bool public = 1;
+
+    string bucket_name = 2;
+}
+
+message S3CreateError {
+    // Описание ошибки
+    string message = 1;
+
+    // Код ошибки
+    Code code = 2;
+
+    enum Code {
+        // Зарезервированный код ошибки
+        _ = 0;
+
+        // Недостаточно средств для создания сервиса
+        INSUFFICIENT_FUNDS = 1;
+
+        // Неизвестная конфигурация
+        CONFIGURATION_NOT_FOUND = 2;
+
+        // Некорректное название сервиса
+        INVALID_DISPLAY_NAME = 4;
+
+        // Создание временно недоступно
+        TEMPORARILY_UNAVAILABLE = 5;
+
+        // Создание недоступно
+        SERVICE_DISABLED = 6;
+
+        // Превышен лимит квоты
+        QUOTA_LIMIT_EXCEEDED = 7;
+
+        BUCKET_NAME_ALREADY_EXISTS = 8;
+
+        INVALID_BUCKET_NAME = 9;
+    }
+}
+
+message S3 {
+    // Признак публичности репозитория
+    bool public = 1;
+    string access_key = 2;
+    string secret_key = 3;
+    string fqdn = 4;
+    repeated Cors cors = 5;
+    uint32 quota_used_size = 6;
+}
+
+message Cors {
+    uint32 id = 1;
+    // Тип запроса(GET/POST/PUT/DELETE/HEAD)
+    repeated string http_method = 2;
+    repeated string http_header = 3;
+    uint64 cache_ttl = 4;
+    string fqdn = 5;
+}
