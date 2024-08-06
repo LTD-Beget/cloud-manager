@@ -1,0 +1,105 @@
+syntax = 'proto3';
+
+package beget.cloud.v1.cloud;
+import "google/api/annotations.proto";
+import "cloud/proto/v1/cloud.proto";
+
+// Управление резервными копиями PostgreSQL
+//
+// Предоставляет набор методов для управления резервными копиями облачного сервиса MySQL
+service PostgresqlBackupService {
+    // Получить список доступных резервных копий PostgreSQL
+    //
+    // Отдаёт список доступных к восстановлению резервных копий. Информация о копии содержит данные о сервисе,
+    // дату создания копии
+    rpc getList(GetListRequest) returns (GetListRequest) {
+        option (google.api.http) = {
+            get: "/v1/cloud/postgresql/backup"
+        };
+    }
+
+    // Восстановить резервную копию PostgreSQL
+    //
+    // Восстанавливает сервис из переданной в запросе резервной копии.
+    //
+    // Для получения доступных идентификаторов резервных копий `copy_id` необходимо использовать метод
+    // "Получить список доступных резервных копий PostgreSQL" из API "Управление резервными копиями PostgreSQL".
+    rpc restore(RestoreRequest) returns (RestoreResponse) {
+        option (google.api.http) = {
+            post: "/v1/cloud/postgresql/backup/{copy_id}",
+            body: "*"
+        };
+    }
+}
+
+message GetListRequest {
+}
+
+message GetListResponse {
+    // Информация о доступных резервных копиях
+    repeated Copy copy = 1;
+}
+
+message RestoreRequest {
+    // Идентификатор копии
+    uint64 copy_id = 1;
+
+    // Идентификатор сервиса в формате UUIDv4
+    string service_uuid = 2;
+}
+
+message RestoreResponse {
+    // Результат запроса
+    oneof result {
+        // Результат запроса: информация о восстановленном сервисе
+        cloud.Service service = 1;
+
+        // Результат запроса: ошибка при восстановлении резервной копии
+        Error error = 2;
+    }
+
+    message Error {
+        // Описание ошибки
+        string message = 1;
+
+        // Код ошибки
+        Code code = 2;
+
+        enum Code {
+            // Зарезервированный код ошибки
+            _ = 0;
+
+            // Некорректный статус ресурса (отличный от running/stopped)
+            INVALID_STATE = 1;
+
+            // Доступ к сервису заблокирован
+            SERVICE_DISABLED = 2;
+        }
+    }
+
+}
+
+
+message Copy {
+    uint64 id = 1;
+
+    // Идентификатор сервиса в формате uuid v4
+    string service_uuid = 2;
+
+    // Отображаемое имя сервиса
+    string service_name = 3;
+
+    // Версия PostgreSQL
+    Type type = 4;
+
+    // Дата создания копии в формате RFC3339
+    string date = 5;
+
+    // Размер копии в байтах
+    uint64 size = 6;
+
+    enum Type {
+        POSTGRESQL14 = 0;
+        POSTGRESQL15 = 1;
+    }
+}
