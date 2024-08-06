@@ -135,6 +135,9 @@ message CreateRequest {
 
     // Регион, в котором будет создан сервис. По-умолчанию: ru1
     string region = 6;
+
+    // Идентификатор бекапа, который будет восстановлен на созданный сервер
+    string backup_id = 8;
 }
 
 message CreateResponse {

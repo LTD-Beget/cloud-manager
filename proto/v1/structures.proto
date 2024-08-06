@@ -75,3 +75,85 @@ message ParamConfig {
         repeated string value = 1;
     }
 }
+
+message CopyInfo {
+    // Идентификатор копии
+    uint64 id = 1;
+
+    // Идентификатор сервиса, в формате uuid v4
+    string service_id = 2;
+
+    // Имя БД, с которой создавалась резервная копия
+    string database_name = 3;
+
+    // Тип БД
+    string database_type = 4;
+
+    // Версия БД
+    string database_version = 5;
+
+    // Дата создания копии в RFC3339
+    string date_create = 6;
+
+    // Общий размер резервной копии в байтах
+    uint64 size = 7;
+
+    // Регион, в котором доступна копия
+    string region = 8;
+
+    // Конфигурация, которая использовалась сервером в момент создания резервной копии
+    Configuration configuration = 9;
+
+    message Configuration {
+        // Количество ядер процессора
+        uint32 cpu_count = 1;
+
+        // Объем дисковой квоты в Мб
+        uint32 disk_size = 2;
+
+        // Объем оперативной памяти в Мб
+        uint32 memory = 3;
+    }
+}
+
+message OrderInfo {
+    // Идентификатор задания
+    uint64 id = 1;
+
+    // Информация о соответствующей резервной копии
+    CopyInfo copy_info = 2;
+
+    // Дата создания задания в формате RFC3339
+    string backup_date_create = 3;
+
+    // Идентификатор сервиса, в формате uuid v4
+    string service_id = 4;
+
+    // Имя БД, на которую выполнялось восстановление
+    string database_name = 5;
+
+    // Тип БД
+    string database_type = 6;
+
+    // Дата создания задания в формате RFC3339
+    string date_create = 7;
+
+    // Дата завершения задания в формате RFC3339
+    string date_complete = 8;
+
+    // Статус задания
+    OrderStatus status = 9;
+
+    enum OrderStatus {
+        _ = 0;
+
+        // Восстанавливается
+        PROCESSING = 1;
+
+        // Восстановление завершено
+        COMPLETED = 2;
+
+        // Ошибка
+        ERROR = 3;
+    }
+}
