@@ -1,6 +1,6 @@
 syntax = 'proto3';
 
-package beget.cloud.v1.cloud;
+package beget.cloud.v1.mysqlBackup;
 import "google/api/annotations.proto";
 import "cloud/proto/v1/cloud.proto";
 
