@@ -2,7 +2,7 @@ syntax = 'proto3';
 
 package beget.cloud.v1.mysqlBackup;
 import "google/api/annotations.proto";
-import "cloud/proto/v1/cloud.proto";
+import "cloud/proto/v1/structures.proto";
 
 // Управление резервными копиями MySQL
 //
@@ -30,6 +30,15 @@ service MysqlBackupService {
             body: "*"
         };
     }
+
+    // Получить список заданий на восстановление PostgreSQL
+    //
+    // Возвращает список заданий на восстановление с их статусами.
+    rpc getOrders(GetOrdersRequest) returns (GetOrdersResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/mysql/backup/orders",
+        };
+    }
 }
 
 message GetListRequest {
@@ -37,7 +46,7 @@ message GetListRequest {
 
 message GetListResponse {
     // Информация о доступных резервных копиях MySQL
-    repeated Copy copy = 1;
+    repeated structures.MysqlCopy copy = 1;
 }
 
 message RestoreRequest {
@@ -51,8 +60,8 @@ message RestoreRequest {
 message RestoreResponse {
     // Результат запроса
     oneof result {
-        // Результат запроса: информация о восстановленном сервисе
-        cloud.Service service = 1;
+        // Результат запроса: информация о задании
+        structures.MysqlRestoreOrder order = 1;
 
         // Результат запроса: ошибка при восстановлении резервной копии
         Error error = 2;
@@ -79,26 +88,15 @@ message RestoreResponse {
 
 }
 
-message Copy {
-    uint64 id = 1;
+message GetOrdersRequest {
+    // Количество записей на страницу
+    uint32 limit = 1;
 
-    // Идентификатор сервиса в формате uuid v4
-    string service_uuid = 2;
+    // Смещение относительно нулевой (последней) записи
+    uint32 offset = 2;
+}
 
-    // Отображаемое имя сервиса
-    string service_name = 3;
-
-    // Версия MySQL
-    Type type = 4;
-
-    // Дата создания копии в формате RFC3339
-    string date = 5;
-
-    // Размер копии в байтах
-    uint64 size = 6;
-
-    enum Type {
-        MYSQL5 = 0;
-        MYSQL8 = 1;
-    }
+message GetOrdersResponse {
+    // История заданий по восстановлению
+    repeated structures.MysqlRestoreOrder order = 1;
 }
