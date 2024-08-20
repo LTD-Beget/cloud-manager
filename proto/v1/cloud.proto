@@ -346,6 +346,7 @@ message Service {
         POSTGRESQL14 = 2;
         POSTGRESQL15 = 3;
         S_3 = 4;
+        POSTGRESQL163 = 5;
     }
 
     enum Status {
