@@ -395,6 +395,9 @@ message ServiceConfiguration {
 
         // Параметры конфигурации сервиса: управляемая БД PostgreSQL 14
         postgresql.Postgresql14Configuration postgresql14 = 8;
+
+        // Параметры конфигурации сервиса: управляемая БД PostgreSQL 16.3
+        postgresql.Postgresql14Configuration postgresql163 = 10;
     }
 
     enum Type {
@@ -403,5 +406,6 @@ message ServiceConfiguration {
         POSTGRESQL14 = 2;
         POSTGRESQL15 = 3;
         S_3 = 4;
+        POSTGRESQL163 = 5;
     }
 }
