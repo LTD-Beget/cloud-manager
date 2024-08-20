@@ -313,7 +313,7 @@ message Service {
         postgresql.Postgresql14 postgresql14 = 18;
 
         // Информация о конкретном сервисе: управляемая БД PostgreSQL 16.3
-        postgresql.Postgresql163 postgresql163 = 19;
+        postgresql.Postgresql163 postgresql163 = 20;
 
         // Информация о конкретном сервисе: хранилище S3
         s3.S3 s3 = 19;
