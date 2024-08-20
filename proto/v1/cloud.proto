@@ -6,6 +6,7 @@ import "cloud/proto/v1/mysql.proto";
 import "cloud/proto/v1/postgresql.proto";
 import "cloud/proto/v1/s3.proto";
 // do not use structures.proto here for avoid recursive import
+//TEST changes
 
 // Управление сервисами
 //
