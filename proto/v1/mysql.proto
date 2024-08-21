@@ -554,6 +554,35 @@ message Mysql8 {
     bool pma_installing = 9;
 }
 
+message Mysql84 {
+    // Конфигурация базы данных
+    Mysql84Configuration configuration = 1;
+
+    // Хост для подключения к базе данных
+    string host = 2;
+
+    // Порт для подключения к базе данных
+    uint32 port = 3;
+
+    // Адреса для доступа к управляемому сервису
+    structures.AddressInfo address_info = 4;
+
+    // Адрес PhpMyAdmin
+    string pma_url = 5;
+
+    // Размер использованного места на диске в байтах
+    uint64 disk_used = 6;
+
+    // Размер доступного места на диске в байтах
+    uint64 disk_left = 7;
+
+    // Включен ли режим "только для чтения"
+    bool read_only = 8;
+
+    // PhpMyAdmin в процессе установки
+    bool pma_installing = 9;
+}
+
 message CreateParams {
     // Имя базы данных
     string db_name = 1;
@@ -635,6 +664,29 @@ message Mysql5Configuration {
 }
 
 message Mysql8Configuration {
+    // Количество ядер процессора
+    uint32 cpu_count = 1;
+
+    // Размер диска в MB
+    uint32 disk_size = 2;
+
+    // Размер памяти в MB
+    uint32 memory = 3;
+
+    // Версия MySQL
+    string version = 4;
+
+    // Отображаемая версия MySQL
+    string display_version = 5;
+
+    // Список доступных параметров для конфигурации базы данных
+    repeated structures.ParamConfig param_config = 6;
+
+    // Список параметров по умолчанию  для конфигурации базы данных (my.cnf)
+    map<string, string> param_default = 7;
+}
+
+message Mysql84Configuration {
     // Количество ядер процессора
     uint32 cpu_count = 1;
 

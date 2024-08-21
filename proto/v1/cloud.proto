@@ -306,6 +306,9 @@ message Service {
         // Информация о конкретном сервисе: управляемая БД MySQL 8
         mysql.Mysql8 mysql8 = 10;
 
+        // Информация о конкретном сервисе: управляемая БД MySQL 8.4
+        mysql.Mysql84 mysql4 = 22;
+
         // Информация о конкретном сервисе: управляемая БД PostgreSQL 15
         postgresql.Postgresql15 postgresql15 = 17;
 
@@ -343,6 +346,7 @@ message Service {
     enum Type {
         MYSQL5 = 0;
         MYSQL8 = 1;
+        MYSQL84 = 6;
         POSTGRESQL14 = 2;
         POSTGRESQL15 = 3;
         S_3 = 4;
@@ -390,6 +394,9 @@ message ServiceConfiguration {
         // Параметры конфигурации сервиса: управляемая БД MySQL 8
         mysql.Mysql8Configuration mysql8 = 5;
 
+        // Параметры конфигурации сервиса: управляемая БД MySQL 8.4
+        mysql.Mysql84Configuration mysql84 = 11;
+
         // Параметры конфигурации сервиса: управляемая БД PostgreSQL 15
         postgresql.Postgresql15Configuration postgresql15 = 7;
 
@@ -403,6 +410,7 @@ message ServiceConfiguration {
     enum Type {
         MYSQL5 = 0;
         MYSQL8 = 1;
+        MYSQL84 = 6;
         POSTGRESQL14 = 2;
         POSTGRESQL15 = 3;
         S_3 = 4;
