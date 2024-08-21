@@ -307,7 +307,7 @@ message Service {
         mysql.Mysql8 mysql8 = 10;
 
         // Информация о конкретном сервисе: управляемая БД MySQL 8.4
-        mysql.Mysql84 mysql4 = 22;
+        mysql.Mysql84 mysql84 = 22;
 
         // Информация о конкретном сервисе: управляемая БД PostgreSQL 15
         postgresql.Postgresql15 postgresql15 = 17;
