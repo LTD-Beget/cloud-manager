@@ -605,8 +605,8 @@ message PgUpdateRemoteAccessResponse {
     }
 }
 
-message Postgresql163 {
-    Postgresql163Configuration configuration = 1;
+message Postgresql164 {
+    Postgresql164Configuration configuration = 1;
 
     // Хост для подключения к базе данных
     string host = 2;
@@ -757,7 +757,7 @@ message PgCreateError {
     }
 }
 
-message Postgresql163Configuration {
+message Postgresql164Configuration {
     // Количество ядер процессора
     uint32 cpu_count = 1;
 
