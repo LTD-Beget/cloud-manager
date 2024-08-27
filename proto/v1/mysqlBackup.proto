@@ -14,7 +14,7 @@ service MysqlBackupService {
     // дату создания копии
     rpc getList(GetListRequest) returns (GetListRequest) {
         option (google.api.http) = {
-            get: "/v1/cloud/mysql/backup"
+            get: "/v1/cloud/mysql/backup",
         };
     }
 
