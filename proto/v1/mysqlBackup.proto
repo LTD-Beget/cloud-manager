@@ -24,7 +24,7 @@ service MysqlBackupService {
     //
     // Для получения доступных идентификаторов резервных копий `copy_id` необходимо использовать метод
     // "Получить список доступных резервных копий MySQL" из API "Управление резервными копиями MySQL".
-    rpc restoreMysqlBackup(RestoreRequest) returns (RestoreResponse) {
+    rpc restore(RestoreRequest) returns (RestoreResponse) {
         option (google.api.http) = {
             post: "/v1/cloud/mysql/backup/{copy_id}",
             body: "*"
