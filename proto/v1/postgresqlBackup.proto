@@ -12,7 +12,7 @@ service PostgresqlBackupService {
     //
     // Отдаёт список доступных к восстановлению резервных копий. Информация о копии содержит данные о сервисе,
     // дату создания копии
-    rpc getList(GetListRequest) returns (GetListRequest) {
+    rpc getList(GetListRequest) returns (GetListResponse) {
         option (google.api.http) = {
             get: "/v1/cloud/postgresql/backup",
         };
