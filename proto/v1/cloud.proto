@@ -68,7 +68,7 @@ service CloudService {
     //
     // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
     // "Получить информацию о сервисах" из API "Управляемые сервисы".
-    rpc update(UpdateRequest) returns (UpdateResponse) {
+    rpc update(UpdateRequest) returns (UpdateResponse){
         option (google.api.http) = {
             patch: "/v1/cloud/{service_id}",
             body: "*"
