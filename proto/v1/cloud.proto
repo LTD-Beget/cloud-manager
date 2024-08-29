@@ -1,10 +1,12 @@
 syntax = 'proto3';
 
 package beget.cloud.v1.cloud;
+
 import "google/api/annotations.proto";
 import "cloud/proto/v1/mysql.proto";
 import "cloud/proto/v1/postgresql.proto";
 import "cloud/proto/v1/s3.proto";
+
 // do not use structures.proto here for avoid recursive import
 
 // Управление сервисами
@@ -304,11 +306,17 @@ message Service {
         // Информация о конкретном сервисе: управляемая БД MySQL 8
         mysql.Mysql8 mysql8 = 10;
 
+        // Информация о конкретном сервисе: управляемая БД MySQL 8.4
+        mysql.Mysql84 mysql84 = 22;
+
         // Информация о конкретном сервисе: управляемая БД PostgreSQL 15
         postgresql.Postgresql15 postgresql15 = 17;
 
         // Информация о конкретном сервисе: управляемая БД PostgreSQL 14
         postgresql.Postgresql14 postgresql14 = 18;
+
+        // Информация о конкретном сервисе: управляемая БД PostgreSQL 16.4
+        postgresql.Postgresql164 postgresql164 = 21;
 
         // Информация о конкретном сервисе: хранилище S3
         s3.S3 s3 = 19;
@@ -338,9 +346,11 @@ message Service {
     enum Type {
         MYSQL5 = 0;
         MYSQL8 = 1;
+        MYSQL84 = 6;
         POSTGRESQL14 = 2;
         POSTGRESQL15 = 3;
         S_3 = 4;
+        POSTGRESQL164 = 5;
     }
 
     enum Status {
@@ -374,7 +384,7 @@ message ServiceConfiguration {
     // Регион, в котором доступна конфигурация
     string region = 6;
 
-    Type type =  9;
+    Type type = 9;
 
     // Параметры конфигурации сервиса
     oneof configuration {
@@ -384,18 +394,26 @@ message ServiceConfiguration {
         // Параметры конфигурации сервиса: управляемая БД MySQL 8
         mysql.Mysql8Configuration mysql8 = 5;
 
+        // Параметры конфигурации сервиса: управляемая БД MySQL 8.4
+        mysql.Mysql84Configuration mysql84 = 11;
+
         // Параметры конфигурации сервиса: управляемая БД PostgreSQL 15
         postgresql.Postgresql15Configuration postgresql15 = 7;
 
         // Параметры конфигурации сервиса: управляемая БД PostgreSQL 14
         postgresql.Postgresql14Configuration postgresql14 = 8;
+
+        // Параметры конфигурации сервиса: управляемая БД PostgreSQL 16.4
+        postgresql.Postgresql164Configuration postgresql164 = 10;
     }
 
     enum Type {
         MYSQL5 = 0;
         MYSQL8 = 1;
+        MYSQL84 = 6;
         POSTGRESQL14 = 2;
         POSTGRESQL15 = 3;
         S_3 = 4;
+        POSTGRESQL164 = 5;
     }
 }
