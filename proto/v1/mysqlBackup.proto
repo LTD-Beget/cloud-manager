@@ -1,0 +1,105 @@
+syntax = 'proto3';
+
+package beget.cloud.v1.mysqlBackup;
+import "google/api/annotations.proto";
+import "cloud/proto/v1/structures.proto";
+
+// Управление резервными копиями MySQL
+//
+// Предоставляет набор методов для управления резервными копиями облачного сервиса MySQL
+service MysqlBackupService {
+    // Получить список доступных резервных копий MySQL
+    //
+    // Отдаёт список доступных к восстановлению резервных копий. Информация о копии содержит данные о сервисе,
+    // дату создания копии
+    rpc getList(GetListRequest) returns (GetListResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/mysql/backup",
+        };
+    }
+
+    // Восстановить резервную копию MySQL
+    //
+    // Восстанавливает сервис из переданной в запросе резервной копии.
+    //
+    // Для получения доступных идентификаторов резервных копий `copy_id` необходимо использовать метод
+    // "Получить список доступных резервных копий MySQL" из API "Управление резервными копиями MySQL".
+    rpc restore(RestoreRequest) returns (RestoreResponse) {
+        option (google.api.http) = {
+            post: "/v1/cloud/mysql/backup/{copy_id}",
+            body: "*"
+        };
+    }
+
+    // Получить список заданий на восстановление PostgreSQL
+    //
+    // Возвращает список заданий на восстановление с их статусами.
+    rpc getOrders(GetOrdersRequest) returns (GetOrdersResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/mysql/backup/orders",
+        };
+    }
+}
+
+message GetListRequest {
+}
+
+message GetListResponse {
+    // Информация о доступных резервных копиях MySQL
+    repeated structures.MysqlCopy copy = 1;
+}
+
+message RestoreRequest {
+    // Идентификатор копии
+    uint64 copy_id = 1;
+
+    // Идентификатор сервиса в формате UUIDv4
+    string service_uuid = 2;
+}
+
+message RestoreResponse {
+    // Результат запроса
+    oneof result {
+        // Результат запроса: информация о задании
+        structures.MysqlRestoreOrder order = 1;
+
+        // Результат запроса: ошибка при восстановлении резервной копии
+        Error error = 2;
+    }
+
+    message Error {
+        // Описание ошибки
+        string message = 1;
+
+        // Код ошибки
+        Code code = 2;
+
+        enum Code {
+            // Зарезервированный код ошибки
+            _ = 0;
+
+            // Некорректный статус ресурса (отличный от running/stopped)
+            INVALID_STATE = 1;
+
+            // Доступ к сервису заблокирован
+            SERVICE_DISABLED = 2;
+
+            // Текущей конфигурации недостаточно для восстановления
+            INSUFFICIENT_CONFIGURATION = 3;
+        }
+    }
+
+}
+
+message GetOrdersRequest {
+    // Количество записей на страницу
+    uint32 limit = 1;
+
+    // Смещение относительно нулевой (последней) записи
+    uint32 offset = 2;
+}
+
+message GetOrdersResponse {
+    // История заданий по восстановлению
+    repeated structures.MysqlRestoreOrder order = 1;
+}

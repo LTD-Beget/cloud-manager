@@ -75,3 +75,132 @@ message ParamConfig {
         repeated string value = 1;
     }
 }
+
+message MysqlCopy {
+    uint64 id = 1;
+
+    // Идентификатор сервиса в формате uuid v4
+    string service_uuid = 2;
+
+    // Отображаемое имя сервиса
+    string service_name = 3;
+
+    // Версия MySQL
+    Type type = 4;
+
+    // Дата создания копии в формате RFC3339
+    string date = 5;
+
+    // Размер копии в байтах
+    uint64 size = 6;
+
+    // Регион, в котором доступна копия
+    string region = 7;
+
+    enum Type {
+        MYSQL5 = 0;
+        MYSQL8 = 1;
+    }
+}
+
+message PostgresqlCopy {
+    uint64 id = 1;
+
+    // Идентификатор сервиса в формате uuid v4
+    string service_uuid = 2;
+
+    // Отображаемое имя сервиса
+    string service_name = 3;
+
+    // Версия PostgreSQL
+    Type type = 4;
+
+    // Дата создания копии в формате RFC3339
+    string date = 5;
+
+    // Размер копии в байтах
+    uint64 size = 6;
+
+    // Регион, в котором доступна копия
+    string region = 7;
+
+    enum Type {
+        POSTGRESQL14 = 0;
+        POSTGRESQL15 = 1;
+    }
+}
+
+message MysqlRestoreOrder {
+    // Идентификатор задания
+    uint64 id = 1;
+
+    // Информация о соответствующей резервной копии
+    MysqlCopy copy_info = 2;
+
+    // Дата создания задания в формате RFC3339
+    string backup_date_create = 3;
+
+    // Идентификатор сервиса, в формате uuid v4
+    string service_id = 4;
+
+    // Имя БД, на которую выполнялось восстановление
+    string database_name = 5;
+
+    // Дата создания задания в формате RFC3339
+    string date_create = 6;
+
+    // Дата завершения задания в формате RFC3339
+    string date_complete = 7;
+
+    // Статус задания
+    OrderStatus status = 8;
+
+    enum OrderStatus {
+        _ = 0;
+
+        // Восстанавливается
+        PROCESSING = 1;
+
+        // Восстановление завершено
+        COMPLETED = 2;
+
+        // Ошибка
+        ERROR = 3;
+    }
+}
+
+message PostgresqlRestoreOrder {
+    // Идентификатор задания
+    uint64 id = 1;
+
+    // Информация о соответствующей резервной копии
+    PostgresqlCopy copy_info = 2;
+
+    // Дата создания задания в формате RFC3339
+    string backup_date_create = 3;
+
+    // Идентификатор сервиса, в формате uuid v4
+    string service_id = 4;
+
+    // Дата создания задания в формате RFC3339
+    string date_create = 5;
+
+    // Дата завершения задания в формате RFC3339
+    string date_complete = 6;
+
+    // Статус задания
+    OrderStatus status = 7;
+
+    enum OrderStatus {
+        _ = 0;
+
+        // Восстанавливается
+        PROCESSING = 1;
+
+        // Восстановление завершено
+        COMPLETED = 2;
+
+        // Ошибка
+        ERROR = 3;
+    }
+}
