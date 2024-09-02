@@ -83,6 +83,9 @@ message RestoreResponse {
 
             // Доступ к сервису заблокирован
             SERVICE_DISABLED = 2;
+
+	    // Конфигурации недостаточно для восстановления
+            INSUFFICIENT_CONFIGURATION = 3;
         }
     }
 
