@@ -145,8 +145,8 @@ message MysqlRestoreOrder {
     // Идентификатор сервиса, в формате uuid v4
     string service_id = 4;
 
-    // Имя БД, на которую выполнялось восстановление
-    string database_name = 5;
+    // Имя сервиса
+    string service_name = 5;
 
     // Дата создания задания в формате RFC3339
     string date_create = 6;
@@ -184,14 +184,17 @@ message PostgresqlRestoreOrder {
     // Идентификатор сервиса, в формате uuid v4
     string service_id = 4;
 
+    // Имя сервиса
+    string service_name = 5;
+
     // Дата создания задания в формате RFC3339
-    string date_create = 5;
+    string date_create = 6;
 
     // Дата завершения задания в формате RFC3339
-    string date_complete = 6;
+    string date_complete = 7;
 
     // Статус задания
-    OrderStatus status = 7;
+    OrderStatus status = 8;
 
     enum OrderStatus {
         _ = 0;
