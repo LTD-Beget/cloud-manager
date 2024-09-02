@@ -86,7 +86,7 @@ message MysqlCopy {
     string service_name = 3;
 
     // Версия MySQL
-    Type type = 4;
+    Version version = 4;
 
     // Дата создания копии в формате RFC3339
     string date = 5;
@@ -97,9 +97,10 @@ message MysqlCopy {
     // Регион, в котором доступна копия
     string region = 7;
 
-    enum Type {
+    enum Version {
         MYSQL5 = 0;
         MYSQL8 = 1;
+        MYSQL84 = 2;
     }
 }
 
@@ -113,7 +114,7 @@ message PostgresqlCopy {
     string service_name = 3;
 
     // Версия PostgreSQL
-    Type type = 4;
+    Version version = 4;
 
     // Дата создания копии в формате RFC3339
     string date = 5;
@@ -124,9 +125,10 @@ message PostgresqlCopy {
     // Регион, в котором доступна копия
     string region = 7;
 
-    enum Type {
+    enum Version {
         POSTGRESQL14 = 0;
         POSTGRESQL15 = 1;
+        POSTGRESQL164 = 2;
     }
 }
 
