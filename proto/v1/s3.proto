@@ -250,9 +250,14 @@ message S3CreateError {
         // Превышен лимит квоты
         QUOTA_LIMIT_EXCEEDED = 7;
 
+        // Бакет с таким именем уже существует
         BUCKET_NAME_ALREADY_EXISTS = 8;
 
+        // Некорректное уникальное имя бакета
         INVALID_BUCKET_NAME = 9;
+
+        // Создано максимально доступное количество бакетов
+        BUCKET_LIMIT_REACHED = 10;
     }
 }
 
