@@ -250,9 +250,14 @@ message S3CreateError {
         // Превышен лимит квоты
         QUOTA_LIMIT_EXCEEDED = 7;
 
+        // Бакет с таким именем уже существует
         BUCKET_NAME_ALREADY_EXISTS = 8;
 
+        // Некорректное уникальное имя бакета
         INVALID_BUCKET_NAME = 9;
+
+        // Создано максимально доступное количество бакетов
+        BUCKET_LIMIT_REACHED = 10;
     }
 }
 
@@ -273,4 +278,15 @@ message Cors {
     repeated string http_header = 3;
     uint64 cache_ttl = 4;
     string fqdn = 5;
+}
+
+message S3Configuration {
+    // Доступное место по подписке
+    uint32 subscription_disk_size = 1;
+
+    // Стоимость за каждый последующий гигабайт сверх подписки в день
+    double price_overload_day = 2;
+
+    // Стоимость за каждый последующий гигабайт сверх подписки в месяц
+    double price_overload_month = 3;
 }
