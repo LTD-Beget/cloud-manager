@@ -405,6 +405,9 @@ message ServiceConfiguration {
 
         // Параметры конфигурации сервиса: управляемая БД PostgreSQL 16.4
         postgresql.Postgresql164Configuration postgresql164 = 10;
+
+        // Параметры конфигурации сервиса: облачное S3-совместимое хранилище
+        s3.S3Configuration s3 = 12;
     }
 
     enum Type {
