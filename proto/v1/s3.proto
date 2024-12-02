@@ -5,14 +5,23 @@ import "google/api/annotations.proto";
 
 // Управление S3
 //
-// Предоставляет набор методов для работы с S3 хранилищем
+// Предоставляет набор методов для работы с S3 хранилищем.
 service S3Service {
+    // Получить информацию о квоте
+    //
+    // Возращает количество доступной квоты в рамках подписки, а также общее количество использованной квоты.
     rpc getQuota(GetQuotaRequest) returns (GetQuotaResponse) {
         option (google.api.http) = {
             get: "/v1/cloud/s3/quota",
         };
     }
 
+    // Изменить ключи доступа к бакету
+    //
+    // Меняет ключи доступа к бакету.
+    //
+    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
+    // "Получить информацию о сервисах" из API "Управляемые сервисы" -> "Управление сервисами".
     rpc changeAccessKey(ChangeAccessKeyRequest) returns (ChangeAccessKeyResponse) {
         option (google.api.http) = {
             patch: "/v1/cloud/s3/{service_id}/access-key",
@@ -20,6 +29,11 @@ service S3Service {
         };
     }
 
+    // Изменить политику доступа(CORS) бакета
+    //
+    // Меняет политику доступа(CORS) бакета.
+    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
+    // "Получить информацию о сервисах" из API "Управляемые сервисы" -> "Управление сервисами".
     rpc changeCors(ChangeCorsRequest) returns (ChangeCorsResponse) {
         option (google.api.http) = {
             patch: "/v1/cloud/s3/{service_id}/cors",
@@ -27,6 +41,12 @@ service S3Service {
         };
     }
 
+    // Изменить доменое имя для доступа к бакету
+    //
+    // Меняет доменное имя для доступа к бакету.
+    //
+    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
+    // "Получить информацию о сервисах" из API "Управляемые сервисы" -> "Управление сервисами".
     rpc changeDomain(ChangeDomainRequest) returns (ChangeDomainResponse) {
         option (google.api.http) = {
             patch: "/v1/cloud/s3/{service_id}/domain",
@@ -34,6 +54,12 @@ service S3Service {
         };
     }
 
+    // Изменить тип доступа к бакету(публичный/приватный)
+    //
+    // Меняет тип доступа к бакету - без авторизации, либо с авторизацией по ключам.
+    //
+    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
+    // "Получить информацию о сервисах" из API "Управляемые сервисы" -> "Управление сервисами".
     rpc changePublic(ChangePublicRequest) returns (ChangePublicResponse) {
         option (google.api.http) = {
             patch: "/v1/cloud/s3/{service_id}/public",
@@ -41,12 +67,18 @@ service S3Service {
         };
     }
 
+    // Узнать тарификацию облачного хранилища S3
+    //
+    // Возвращает стоимость в день по подписке и стоимость в день дополнительной тарификации за 1 GB.
     rpc getPrice(GetPriceRequest) returns (GetPriceResponse) {
         option (google.api.http) = {
             get: "/v1/cloud/s3/price",
         };
     }
 
+    // Узнать префикс имени бакета
+    //
+    // Возвращает префикс имени бакета, который будет использован при создании бакета.
     rpc getPrefix(GetPrefixRequest) returns (GetPrefixResponse) {
         option (google.api.http) = {
             get: "/v1/cloud/s3/prefix",
@@ -58,11 +90,15 @@ message GetQuotaRequest {
 }
 
 message GetQuotaResponse {
+    // Общее количество используемой квоты(в том числе дополнительной) в MB
     uint32 used_size = 1;
+
+    // Количество оставшейся квоты в MB доступной по подписке
     uint32 available_size = 2;
 }
 
 message ChangeAccessKeyRequest {
+    // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
 }
 
@@ -86,15 +122,17 @@ message ChangeAccessKeyResponse {
             // Зарезервированный код ошибки
             _ = 0;
 
-            SERVICE_NOT_FOUND = 2;
-
+            // Доступ к сервису заблокирован
             SERVICE_DISABLED = 6;
         }
     }
 }
 
 message ChangeCorsRequest {
+    // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
+
+    // Список политик доступа CORS
     repeated Cors cors = 2;
 }
 
@@ -118,19 +156,20 @@ message ChangeCorsResponse {
             // Зарезервированный код ошибки
             _ = 0;
 
-            SERVICE_NOT_FOUND = 2;
-
+            // Доступ к сервису заблокирован
             SERVICE_DISABLED = 3;
 
-            CORS_NOT_FOUND = 4;
-
+            // Некорректный домен
             INVALID_DOMAIN = 5;
         }
     }
 }
 
 message ChangeDomainRequest {
+    // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
+
+    // Доменое имя третьего уровня
     string fqdn = 2;
 }
 
@@ -154,21 +193,33 @@ message ChangeDomainResponse {
             // Зарезервированный код ошибки
             _ = 0;
 
-            SERVICE_NOT_FOUND = 2;
-
+            // Доступ к сервису заблокирован
             SERVICE_DISABLED = 3;
 
+            // Домен не зарегистрирован
             DOMAIN_NOT_REGISTERED = 4;
 
+            // У домена указаны NS сервера отличные от серверов Beget -
+            // ns1.beget.com
+            // ns2.beget.com
+            // ns1.beget.pro
+            // ns2.beget.pro
             DOMAIN_INCORRECT_NS = 5;
 
+            // Домен не является доменом третьего уровня
             NOT_SUBDOMAIN = 6;
+
+            // Домен не найден на аккаунте пользователя
+            DOMAIN_NOT_FOUND = 7;
         }
     }
 }
 
 message ChangePublicRequest {
+    // Идентификатор сервиса в формате uuid v4
     string service_id = 1;
+
+    // Сделать бакет публичным/приватным
     bool public = 2;
 }
 
@@ -192,8 +243,7 @@ message ChangePublicResponse {
             // Зарезервированный код ошибки
             _ = 0;
 
-            SERVICE_NOT_FOUND = 2;
-
+            // Доступ к сервису заблокирован
             SERVICE_DISABLED = 3;
         }
     }
@@ -203,7 +253,10 @@ message GetPriceRequest {
 }
 
 message GetPriceResponse {
+    // Тарификация в день по подписке
     double rate_day = 1;
+
+    // Дополнительная тарификация(сверх подписки) в день за 1 GB
     double rate_day_overload = 2;
 }
 
@@ -218,6 +271,7 @@ message S3CreateParams {
     // Признак публичности репозитория
     bool public = 1;
 
+    // Имя бакета, может содержать только латинские символы, цифры и знак `-`, при этом символ `-` не может быть в начале или конце названия или повторяться два раза подряд
     string bucket_name = 2;
 }
 
@@ -241,15 +295,6 @@ message S3CreateError {
         // Некорректное название сервиса
         INVALID_DISPLAY_NAME = 4;
 
-        // Создание временно недоступно
-        TEMPORARILY_UNAVAILABLE = 5;
-
-        // Создание недоступно
-        SERVICE_DISABLED = 6;
-
-        // Превышен лимит квоты
-        QUOTA_LIMIT_EXCEEDED = 7;
-
         // Бакет с таким именем уже существует
         BUCKET_NAME_ALREADY_EXISTS = 8;
 
@@ -258,25 +303,46 @@ message S3CreateError {
 
         // Создано максимально доступное количество бакетов
         BUCKET_LIMIT_REACHED = 10;
+
+        // Некорректное описание бакета
+        INVALID_DESCRIPTION = 11;
     }
 }
 
 message S3 {
-    // Признак публичности репозитория
+    // Признак публичности бакета
     bool public = 1;
+
+    // Имя пользователя для доступа к бакету
     string access_key = 2;
+
+    // Пароль для доступа к бакету
     string secret_key = 3;
+
+    // Доменое имя для доступа к бакету
     string fqdn = 4;
+
+    // Политики доступа CORS
     repeated Cors cors = 5;
+
+    // Используемая квота в MB
     uint32 quota_used_size = 6;
 }
 
 message Cors {
+    // Идентификатор политики доступа (необязательное поле при создании CORS)
     uint32 id = 1;
-    // Тип запроса(GET/POST/PUT/DELETE/HEAD)
+
+    // Список HTTP методов, доступны - GET/POST/PUT/DELETE/HEAD
     repeated string http_method = 2;
+
+    // Список разрешенных HTTP заголовков
     repeated string http_header = 3;
+
+    // Время кеширования CORS для браузера
     uint64 cache_ttl = 4;
+
+    // Домен для которого будет разрешен доступ к хранилищу
     string fqdn = 5;
 }
 
