@@ -343,6 +343,9 @@ message Service {
     // Тип сервиса
     Type type = 20;
 
+    // Сервис находится в состоянии восстановления из резервной копии
+    bool restoring = 23;
+
     enum Type {
         MYSQL5 = 0;
         MYSQL8 = 1;
