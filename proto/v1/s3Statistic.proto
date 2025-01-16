@@ -1,0 +1,132 @@
+syntax = 'proto3';
+
+package beget.cloud.v1.s3Statistic;
+
+import "google/api/annotations.proto";
+import "cloud/proto/v1/structures.proto";
+
+// Статистика S3
+//
+// Предоставляет методы для для получения статистики по облачному хранилищу.
+service S3StatisticService {
+    // Получить статистику о количестве запросов к бакету
+    //
+    // Возвращает статистику о количестве запросов к бакету за указанный период.
+    //
+    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
+    // "Получить информацию о сервисах" из API "Управляемые сервисы".
+    rpc getRequest(GetRequestRequest) returns (GetRequestResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/s3/{service_id}/statistic/count-request"
+        };
+    }
+
+    // Получить статистику о использованном трафике
+    //
+    // Возвращает статистику о использованном входящем/исходящем трафике за указанный период.
+    //
+    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
+    // "Получить информацию о сервисах" из API "Управляемые сервисы".
+    rpc getTraffic(GetTrafficRequest) returns (GetTrafficResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/s3/{service_id}/statistic/traffic-usage"
+        };
+    }
+
+    // Получить статистику о входящем/исходящем трафике
+    //
+    // Возвращает статистику о входящем/исходящем трафике за указанный период.
+    //
+    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
+    // "Получить информацию о сервисах" из API "Управляемые сервисы".
+    rpc getNetwork(GetNetworkRequest) returns (GetNetworkResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/s3/{service_id}/statistic/network"
+        };
+    }
+
+    // Получить статистику о использовании квоты
+    //
+    // Возвращает статистику о использовании квоты за указанный период.
+    //
+    // Для получения доступных идентификаторов сервисов `service_id` необходимо использовать метод
+    // "Получить информацию о сервисах" из API "Управляемые сервисы".
+    rpc getQuota(GetQuotaRequest) returns (GetQuotaResponse) {
+        option (google.api.http) = {
+            get: "/v1/cloud/s3/{service_id}/statistic/quota"
+        };
+    }
+}
+
+message GetRequestRequest {
+    // Идентификатор сервиса в формате uuid v4
+    string service_id = 1;
+
+    // Период за который нужна статистика
+    structures.StatisticPeriod period = 2;
+}
+
+message GetRequestResponse {
+    // Количество запросов GET
+    structures.StatisticSeriesData method_get = 1;
+
+    // Количество запросов POST
+    structures.StatisticSeriesData method_post = 2;
+
+    // Количество запросов PUT
+    structures.StatisticSeriesData method_put = 3;
+
+    // Количество запросов HEAD
+    structures.StatisticSeriesData method_head = 4;
+
+    // Количество запросов DELETE
+    structures.StatisticSeriesData method_delete = 5;
+
+    // Количество запросов OPTIONS
+    structures.StatisticSeriesData method_options = 6;
+}
+
+message GetNetworkRequest {
+    // Идентификатор сервиса в формате uuid v4
+    string service_id = 1;
+
+    // Период за который нужна статистика
+    structures.StatisticPeriod  period = 2;
+}
+
+message GetNetworkResponse {
+    // Скорость входящего трафика, в КБ/с
+    structures.StatisticSeriesData data_rx = 1;
+
+    // Скорость исходящего трафика, в КБ/с
+    structures.StatisticSeriesData data_tx = 2;
+}
+
+message GetTrafficRequest {
+    // Идентификатор сервиса в формате uuid v4
+    string service_id = 1;
+
+    // Период за который нужна статистика
+    structures.StatisticPeriod  period = 2;
+}
+
+message GetTrafficResponse {
+    // Суммарный объем данных загруженных в бакет, в байтах
+    structures.StatisticSeriesData data_rx = 1;
+
+    // Суммарный объем данных скачанный из бакета, в байтах
+    structures.StatisticSeriesData data_tx = 2;
+}
+
+message GetQuotaRequest {
+    // Идентификатор сервиса в формате uuid v4
+    string service_id = 1;
+
+    // Период за который нужна статистика
+    structures.StatisticPeriod  period = 2;
+}
+
+message GetQuotaResponse {
+    // Статистика использования квоты
+    structures.StatisticSeriesData size = 1;
+}
