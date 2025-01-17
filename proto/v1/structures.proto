@@ -45,6 +45,9 @@ enum StatisticPeriod {
 
     // Месяц
     MONTH = 4;
+
+    // Год
+    YEAR = 5;
 }
 
 message ParamConfig {
